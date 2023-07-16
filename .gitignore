@@ -1,0 +1,7 @@
+DesignTimeBuild
+config
+v16
+netcoreapp3.1
+obj
+*.user
+*.DotSettings

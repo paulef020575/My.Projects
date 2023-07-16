@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LoadingSpinner.WPF" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EPV.Database\EPV.Database.csproj" />
+    <ProjectReference Include="..\EPV.Data\EPV.Data.csproj" />
+    <ProjectReference Include="..\My.Projects.Classes\My.Projects.Classes.csproj" />
+    <ProjectReference Include="..\My.Projects.Client\My.Projects.Client.csproj" />
+  </ItemGroup>
+
+</Project>

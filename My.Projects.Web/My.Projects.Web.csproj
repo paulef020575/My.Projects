@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EPV.Database\EPV.Database.csproj" />
+    <ProjectReference Include="..\EPV.Data\EPV.Data.csproj" />
+    <ProjectReference Include="..\My.Projects.Classes\My.Projects.Classes.csproj" />
+  </ItemGroup>
+
+
+</Project>
