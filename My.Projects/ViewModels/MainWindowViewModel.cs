@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using EPV.Data.Conditions;
@@ -187,29 +188,31 @@ namespace My.Projects.ViewModels
 
         #region ShowViewModel
 
-        public void ShowViewModel(DataViewModel viewModel)
+        public async Task ShowViewModel(DataViewModel viewModel)
         {
             if (CurrentViewModel != null)
             {
                 CurrentViewModel.OnStartProgress -= StartProgress;
                 CurrentViewModel.OnFinishProgress -= FinishProgress;
+                CurrentViewModel.OnError -= ShowError;
             }
 
             viewModel.OnStartProgress += StartProgress;
             viewModel.OnFinishProgress += FinishProgress;
+            viewModel.OnError += ShowError;
 
             CurrentViewModel = viewModel;
 
-            viewModel.LoadData();
+            await viewModel.LoadData();
         }
 
         #endregion
 
         #region ShowStartViewModel
 
-        internal void ShowStartViewModel()
+        internal async Task ShowStartViewModel()
         {
-            ShowViewModel(new DepartmentListViewModel(ApiConnector));
+            await ShowViewModel(new DepartmentListViewModel(ApiConnector));
         }
 
 
@@ -220,6 +223,25 @@ namespace My.Projects.ViewModels
         private void CloseApp()
         {
             Application.Current.Shutdown();
+        }
+
+        #endregion
+
+        #region ShowError
+
+        private void ShowError(object sender, string e)
+        {
+            ErrorMessage = e;
+            DispatcherTimer errorTimer = new DispatcherTimer();
+            errorTimer.Interval = new TimeSpan(0, 0, 5);
+            errorTimer.Tick += ErrorTimer_Tick;
+            errorTimer.Start();
+        }
+
+        private void ErrorTimer_Tick(object sender, EventArgs e)
+        {
+            ((DispatcherTimer) sender).Stop();
+            ErrorMessage = "";
         }
 
         #endregion

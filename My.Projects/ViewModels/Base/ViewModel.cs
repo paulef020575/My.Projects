@@ -64,6 +64,18 @@ namespace My.Projects.ViewModels.Base
 
         #endregion
 
+        #region OnError
+
+        protected EventHandler<string> _onError;
+
+        public event EventHandler<string> OnError
+        {
+            add { _onError += value; }
+            remove { _onError -= value; }
+        }
+
+        #endregion
+
         #endregion
     }
 }

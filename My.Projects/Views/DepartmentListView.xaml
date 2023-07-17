@@ -9,7 +9,7 @@
     <DockPanel>
         <StackPanel Name="ControlPanel" DockPanel.Dock="Top" Orientation="Horizontal">
             <TextBlock Margin="5" Text="Панель управления" />
-            <Button Command="{Binding RefreshCommand}">O</Button>
+            <Button Command="{Binding RefreshCommand}" FontFamily="Segoe UI Symbol" Content="&#xE149;"/>
         </StackPanel>
         <ListView ItemsSource="{Binding Items}" />
     </DockPanel>

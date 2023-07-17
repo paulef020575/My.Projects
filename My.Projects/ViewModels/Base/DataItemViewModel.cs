@@ -17,7 +17,7 @@ namespace My.Projects.ViewModels.Base
         #region Properties
 
         #region Id
-        
+
         /// <summary>
         ///     Идентификатор объекта
         /// </summary>
@@ -60,7 +60,9 @@ namespace My.Projects.ViewModels.Base
 
         #region Constructors
 
-        protected DataItemViewModel() : base() { }
+        protected DataItemViewModel() : base()
+        {
+        }
 
         public DataItemViewModel(IConnector connector, TDataItem dataItem = null)
             : base(connector)
@@ -83,10 +85,10 @@ namespace My.Projects.ViewModels.Base
         /// <returns></returns>
         protected override async Task<object> GetData(LoaderArguments loaderArguments)
         {
-            TDataItem item = new TDataItem { Id = this.Id};
+            TDataItem item = new TDataItem {Id = this.Id};
             if (Id != Guid.Empty)
-            {
-                item = await loaderArguments.Connector.Load<TDataItem>(DataItem);
+            { 
+                return await loaderArguments.Connector.Load<TDataItem>(DataItem);
             }
 
             return item;
@@ -98,7 +100,7 @@ namespace My.Projects.ViewModels.Base
 
         protected override void SetData(object data)
         {
-            DataItem = (TDataItem)data;
+            DataItem = (TDataItem) data;
         }
 
         #endregion
@@ -120,11 +122,15 @@ namespace My.Projects.ViewModels.Base
         protected virtual void SetProperty<T>(T value, [CallerMemberName] string propertyName = "")
         {
             PropertyInfo propertyInfo = typeof(TDataItem).GetProperty(propertyName);
-            T currentValue = (T)propertyInfo.GetValue(this);
-            if (propertyInfo != null && !T.Equals(currentValue, value))
+            if (propertyInfo != null)
             {
-                propertyInfo.SetValue(DataItem, value);
-                OnPropertyChanged(propertyName);
+                T currentValue = (T) propertyInfo.GetValue(this);
+
+                if (value == null || !value.Equals(currentValue))
+                {
+                    propertyInfo.SetValue(DataItem, value);
+                    OnPropertyChanged(propertyName);
+                }
             }
         }
 

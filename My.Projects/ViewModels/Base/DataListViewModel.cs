@@ -77,7 +77,7 @@ namespace My.Projects.ViewModels.Base
 
         protected override void SetData(object data)
         {
-            IList<TDataItem> dataItems = (IList<TDataItem>)data;
+            IList<TDataItem> dataItems = data as IList<TDataItem>;
 
             Items.Clear();
 

@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using EPV.Data.DataItems;
 using EPV.Database;
@@ -58,16 +59,17 @@ namespace My.Projects.Client
         public virtual async Task<IList<TDataItem>> LoadList<TDataItem>()
             where TDataItem : DataItem, new()
         {
-            TDataItem[] itemList = new TDataItem[0];
+                TDataItem[] itemList = new TDataItem[0];
 
-            HttpResponseMessage response = await HttpClient.GetAsync($"API/{typeof(TDataItem).Name}");
+                HttpResponseMessage response = await HttpClient.GetAsync($"API/{typeof(TDataItem).Name}");
 
-            if (response.IsSuccessStatusCode)
-            {
-                itemList = await response.Content.ReadAsAsync<TDataItem[]>();
-            }
+                if (response.IsSuccessStatusCode)
+                {
+                    itemList = await response.Content.ReadAsAsync<TDataItem[]>();
+                }
 
-            return itemList?.ToList();
+                Thread.Sleep(5000);
+                return itemList?.ToList();
         }
 
 

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using EPV.Database;
 
 namespace My.Projects.ViewModels.Base
@@ -60,29 +63,38 @@ namespace My.Projects.ViewModels.Base
 
         #region LoadData
 
-        public void LoadData()
+        public async Task LoadData()
         {
-            BackgroundWorker loader = new BackgroundWorker();
-            loader.DoWork += Loader_DoWork;
-            loader.RunWorkerCompleted += Loader_RunWorkerCompleted;
-
             startProgress(this, "Загрузка данных");
-            loader.RunWorkerAsync(new LoaderArguments(Connector));
+            object data = await GetData(new LoaderArguments(Connector));
+            SetData(data);
+            finishProgress(this, "");
         }
 
-        private void Loader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            Task<object> x = (Task<object>)e.Result;
-            SetData(x.Result);
-            finishProgress(this, $"{e.Result}");
-        }
+        //private void Loader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        //{
+        //    if (e.Error != null)
+        //    {
+        //        if (e is HttpRequestException)
+        //        {
+        //            _onError?.Invoke(this, (string) Application.Current.Resources["ApiError"]);
+        //            SetData(null);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        SetData(e.Result);
+        //    }
 
-        private void Loader_DoWork(object sender, DoWorkEventArgs e)
-        {
-            LoaderArguments loaderArguments = (LoaderArguments)e.Argument;
+        //    finishProgress(this, "");
+        //}
 
-            e.Result = GetData(loaderArguments);
-        }
+        //private void Loader_DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    LoaderArguments loaderArguments = (LoaderArguments)e.Argument;
+
+        //        e.Result = await GetData(loaderArguments);
+        //}
 
         #endregion
 
