@@ -13,8 +13,8 @@
         <viewModels:MainWindowViewModel />
     </Window.DataContext>
     <DockPanel>
-        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" TextWrapping="Wrap"
-                   Margin="10" DockPanel.Dock="Top">
+        <TextBlock Name="ErrorBlock" Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" TextWrapping="Wrap"
+                   Margin="10" DockPanel.Dock="Top" >
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Collapsed" />
@@ -28,8 +28,14 @@
          </TextBlock>
         <TextBlock Name="StatusBlock" FontSize="10" Margin="5" DockPanel.Dock="Bottom" 
                    Text="{Binding ProgramStatus}" FontWeight="Light" />
-        <Grid >
-            <DockPanel >
+
+        <StackPanel Name="MainMenuPanel" DockPanel.Dock="Left">
+            <Button Command="{Binding CloseCommand}" Margin="5">Выход</Button>
+        </StackPanel>
+        
+
+        <Grid>
+            <DockPanel Name="ContentPanel">
                 <DockPanel.Style>
                     <Style TargetType="DockPanel">
                         <Setter Property="IsEnabled" Value="True" />
@@ -40,9 +46,9 @@
                         </Style.Triggers>
                     </Style>
                 </DockPanel.Style>
-                <TextBlock FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center">Everything is OK!</TextBlock>
+                <ContentControl Content="{Binding CurrentViewModel}" Margin="5" />
             </DockPanel>
-            <DockPanel Opacity=".85" Background="White">
+            <DockPanel Name="ProgressPanel" Opacity=".85" Background="White">
                 <DockPanel.Style>
                     <Style TargetType="DockPanel">
                         <Setter Property="Visibility" Value="Hidden" />

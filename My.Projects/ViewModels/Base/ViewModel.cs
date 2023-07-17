@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using My.Projects.Annotations;
 
@@ -37,5 +38,32 @@ namespace My.Projects.ViewModels.Base
 
         #endregion
 
+        #region Events
+
+        #region OnStartProgress
+
+        protected EventHandler<string> startProgress;
+
+        public event EventHandler<string> OnStartProgress
+        {
+            add { startProgress += value; }
+            remove { startProgress -= value; }
+        }
+
+        #endregion
+
+        #region OnFinishProgress
+
+        protected EventHandler<string> finishProgress;
+
+        public event EventHandler<string> OnFinishProgress
+        {
+            add { finishProgress += value; }
+            remove { finishProgress -= value; }
+        }
+
+        #endregion
+
+        #endregion
     }
 }

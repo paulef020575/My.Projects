@@ -3,10 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:My.Projects"
-             StartupUri="MainWindow.xaml">
+             Startup="Application_Startup">
     <Application.Resources>
-        <system:String x:Key="ApiUri">
-            https://localhost:5001/
-        </system:String>
+        <ResourceDictionary>
+            <system:String x:Key="ApiUri">
+                https://localhost:5001/
+            </system:String>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Views.xaml" />
+            </ResourceDictionary.MergedDictionaries> 
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

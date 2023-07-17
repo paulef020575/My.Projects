@@ -1,4 +1,5 @@
-﻿using System;
+﻿using My.Projects.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,18 @@ namespace My.Projects
     /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            //Disable shutdown when the dialog closes
+
+            var mainWindow = new MainWindow();
+            MainWindowViewModel mainWindowViewModel = new MainWindowViewModel();
+            mainWindow.DataContext = mainWindowViewModel;
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            Current.MainWindow = mainWindow;
+            mainWindow.Show();
+
+            mainWindowViewModel.ShowStartViewModel();
+        }
     }
 }

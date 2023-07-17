@@ -5,6 +5,7 @@ using System.Windows.Threading;
 using EPV.Data.Conditions;
 using My.Projects.Client;
 using My.Projects.ViewModels.Base;
+using My.Projects.ViewModels.References;
 
 namespace My.Projects.ViewModels
 {
@@ -18,14 +19,16 @@ namespace My.Projects.ViewModels
         #region Title
 
         private string _title = "desktop client";
-
+        /// <summary>
+        ///     Заголовок окна
+        /// </summary>
         public override string Title
         {
             get
             {
                 string result = _title;
                 if (CurrentViewModel != null && !string.IsNullOrEmpty(CurrentViewModel.Title))
-                        result = $"{CurrentViewModel} - {result}";
+                        result = $"{CurrentViewModel.Title} - {result}";
 
                 return result;
             }
@@ -79,6 +82,7 @@ namespace My.Projects.ViewModels
                 {
                     _currentViewModel = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(Title));
                 }
             }
         }
@@ -148,7 +152,99 @@ namespace My.Projects.ViewModels
             //DispatcherTimer timer = new DispatcherTimer{ Interval = new TimeSpan(0, 0, 5)};
             //timer.Tick += Timer_Tick;
             //    timer.Start();
+
+            //ShowViewModel(new DepartmentListViewModel(ApiConnector));
         }
+
+        #endregion
+
+        #region Methods
+
+        #region StartProgress
+
+        /// <summary>
+        ///     Отображает запуск долгого процесса
+        /// </summary>
+        /// <param name="sender">класс, запустивший</param>
+        /// <param name="e">строка статуса</param>
+        private void StartProgress(object sender, string e)
+        {
+            ProgramStatus = e;
+            InProgress = true;
+        }
+
+        #endregion
+
+        #region FinishProgress
+
+        private void FinishProgress(object sender, string e = "")
+        {
+            ProgramStatus = e;
+            InProgress = false;
+        }
+
+        #endregion
+
+        #region ShowViewModel
+
+        public void ShowViewModel(DataViewModel viewModel)
+        {
+            if (CurrentViewModel != null)
+            {
+                CurrentViewModel.OnStartProgress -= StartProgress;
+                CurrentViewModel.OnFinishProgress -= FinishProgress;
+            }
+
+            viewModel.OnStartProgress += StartProgress;
+            viewModel.OnFinishProgress += FinishProgress;
+
+            CurrentViewModel = viewModel;
+
+            viewModel.LoadData();
+        }
+
+        #endregion
+
+        #region ShowStartViewModel
+
+        internal void ShowStartViewModel()
+        {
+            ShowViewModel(new DepartmentListViewModel(ApiConnector));
+        }
+
+
+        #endregion
+
+        #region CloseApp
+
+        private void CloseApp()
+        {
+            Application.Current.Shutdown();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Commands
+
+        #region CloseCommand
+
+        private RelayCommand _closeCommand;
+
+        public RelayCommand CloseCommand
+        {
+            get
+            {
+                if (_closeCommand == null)
+                    _closeCommand = new RelayCommand(x => CloseApp());
+
+                return _closeCommand;
+            }
+        }
+
+
+        #endregion
 
         #endregion
 
