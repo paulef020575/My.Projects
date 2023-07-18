@@ -36,7 +36,7 @@ namespace EPV.Database
                 command.Parameters.AddWithValue(key, parameters[key]);
         }
 
-        public override async Task Save<TDataItem>(TDataItem dataItem)
+        public override void Save<TDataItem>(TDataItem dataItem)
         {
             string query = QueryBuilder.GetUpdateOrInsertQuery(dataItem);
 
@@ -45,9 +45,9 @@ namespace EPV.Database
                 FbCommand command = GetCommand(query, connection);
                 AddParameters(command, QueryBuilder.GetQueryParameters(dataItem));
 
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
             }
         }
     }

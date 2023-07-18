@@ -1,7 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using EPV.Data.DataItems;
 using EPV.Database;
 
@@ -83,12 +86,12 @@ namespace My.Projects.ViewModels.Base
         ///     Загружает данные для работы
         /// </summary>
         /// <returns></returns>
-        protected override async Task<object> GetData(LoaderArguments loaderArguments)
+        protected override object GetData(LoaderArguments loaderArguments)
         {
             TDataItem item = new TDataItem {Id = this.Id};
             if (Id != Guid.Empty)
             { 
-                return await loaderArguments.Connector.Load<TDataItem>(DataItem);
+                return loaderArguments.Connector.Load<TDataItem>(DataItem);
             }
 
             return item;
@@ -137,6 +140,41 @@ namespace My.Projects.ViewModels.Base
 
         #endregion
 
+        #region SaveData
+
+        protected virtual void SaveData()
+        {
+            BackgroundWorker saverWorker = new BackgroundWorker();
+            saverWorker.DoWork += SaverWorker_DoWork;
+            saverWorker.RunWorkerCompleted += SaverWorker_RunWorkerCompleted;
+        }
+
+        private void SaverWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                if (e.Error is HttpRequestException)
+                {
+                    _onError?.Invoke(this, (string)Application.Current.Resources["ApiError"]);
+                }
+            }
+            else
+            {
+                _onStatusMessage?.Invoke(this, (string)Application.Current.Resources["DataSaved"]);
+            }
+        }
+
+        private void SaverWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LoaderArguments loaderArguments = (LoaderArguments)e.Argument;
+            loaderArguments.Connector.Save(DataItem);
+        }
+
+
         #endregion
+
+        #endregion
+
+
     }
 }

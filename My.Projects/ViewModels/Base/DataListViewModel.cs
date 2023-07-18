@@ -66,9 +66,9 @@ namespace My.Projects.ViewModels.Base
         ///     Загружает данные для работы
         /// </summary>
         /// <returns></returns>
-        protected override async Task<object> GetData(LoaderArguments loaderArguments)
+        protected override object GetData(LoaderArguments loaderArguments)
         {
-            return await loaderArguments.Connector.LoadList<TDataItem>();
+            return loaderArguments.Connector.LoadList<TDataItem>();
         }
 
         #endregion
@@ -88,6 +88,21 @@ namespace My.Projects.ViewModels.Base
 
         #endregion
 
+        #region EditItem
+
+        private void EditItem(TDataItem item)
+        {
+            _onSwitchToViewModel?.Invoke(this, GetDataItemViewModel(item));
+        }
+
+        #endregion
+
+        #region GetDataItemViewModel
+
+        protected abstract DataItemViewModel<TDataItem> GetDataItemViewModel(TDataItem dataItem);
+
+        #endregion
+
         #endregion
 
         #region Commands
@@ -104,6 +119,23 @@ namespace My.Projects.ViewModels.Base
                     _refreshCommand = new RelayCommand(x => LoadData(), x => !IsLoading);
 
                 return _refreshCommand;
+            }
+        }
+
+        #endregion
+
+        #region EditItemCommand
+
+        private RelayCommand _editItemCommand;
+
+        public RelayCommand EditItemCommand
+        {
+            get
+            {
+                if (_editItemCommand == null)
+                    _editItemCommand = new RelayCommand(x => EditItem((TDataItem)x), x => x is TDataItem);
+
+                return _editItemCommand;
             }
         }
 

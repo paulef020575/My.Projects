@@ -18,6 +18,12 @@ namespace My.Projects.ViewModels.Base
 
         #endregion
 
+        #region PreviousViewModel
+
+        public virtual ViewModel PreviousViewModel { get; set; }
+
+        #endregion
+
         #endregion
 
         #region INotifyPropertyChanged
@@ -35,6 +41,16 @@ namespace My.Projects.ViewModels.Base
         {
             _onPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
+
+        #region Methods
+
+        #region LoadData
+
+        public virtual void LoadData() { }
+
+        #endregion
 
         #endregion
 
@@ -72,6 +88,31 @@ namespace My.Projects.ViewModels.Base
         {
             add { _onError += value; }
             remove { _onError -= value; }
+        }
+
+        #endregion
+
+        #region OnStatusMessage
+
+        protected EventHandler<string> _onStatusMessage;
+
+        public event EventHandler<string> OnStatusMessage
+        { 
+            add { _onStatusMessage += value; }
+            remove { _onStatusMessage -= value; }
+        }
+
+
+        #endregion
+
+        #region OnSwitchToViewModel
+
+        protected EventHandler<ViewModel> _onSwitchToViewModel;
+
+        public event EventHandler<ViewModel> OnSwitchToViewModel
+        {
+            add { _onSwitchToViewModel += value; }
+            remove { _onSwitchToViewModel -= value; }
         }
 
         #endregion

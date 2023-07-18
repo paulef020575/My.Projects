@@ -188,31 +188,45 @@ namespace My.Projects.ViewModels
 
         #region ShowViewModel
 
-        public async Task ShowViewModel(DataViewModel viewModel)
+        public void ShowViewModel(ViewModel viewModel)
         {
             if (CurrentViewModel != null)
             {
                 CurrentViewModel.OnStartProgress -= StartProgress;
                 CurrentViewModel.OnFinishProgress -= FinishProgress;
                 CurrentViewModel.OnError -= ShowError;
+                CurrentViewModel.OnStatusMessage -= ShowStatusMessage;
+                CurrentViewModel.OnSwitchToViewModel -= SwitchToViewModel;
             }
+
+            viewModel.PreviousViewModel = CurrentViewModel;
 
             viewModel.OnStartProgress += StartProgress;
             viewModel.OnFinishProgress += FinishProgress;
             viewModel.OnError += ShowError;
+            viewModel.OnStatusMessage += ShowStatusMessage;
+            viewModel.OnSwitchToViewModel += SwitchToViewModel;
 
             CurrentViewModel = viewModel;
+            viewModel.LoadData();
+        }
 
-            await viewModel.LoadData();
+        #endregion
+
+        #region SwitchToViewModel
+
+        private void SwitchToViewModel(object sender, ViewModel viewModel)
+        {
+            ShowViewModel(viewModel);
         }
 
         #endregion
 
         #region ShowStartViewModel
 
-        internal async Task ShowStartViewModel()
+        internal void ShowStartViewModel()
         {
-            await ShowViewModel(new DepartmentListViewModel(ApiConnector));
+            ShowViewModel(new DepartmentListViewModel(ApiConnector));
         }
 
 
@@ -243,6 +257,16 @@ namespace My.Projects.ViewModels
             ((DispatcherTimer) sender).Stop();
             ErrorMessage = "";
         }
+
+        #endregion
+
+        #region ShowStatusMessage
+
+        private void ShowStatusMessage(object sender, string e)
+        {
+            ProgramStatus = e;
+        }
+
 
         #endregion
 

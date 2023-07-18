@@ -24,31 +24,31 @@ namespace My.Projects.Web.Controllers
         
         // GET: api/<BaseController>
         [HttpGet]
-        public async Task<IList<TDataItem>> Get()
+        public IList<TDataItem> Get()
         {
             MyProjectsConnection connection 
                 = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
-            return await connection.LoadList<TDataItem>();
+            return connection.LoadList<TDataItem>();
         }
 
         // GET api/<BaseController>/5
         [HttpGet("{id}")]
-        public async Task<TDataItem> Get(Guid id)
+        public TDataItem Get(Guid id)
         {
             MyProjectsConnection connection
                 = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
             TDataItem dataItem = new TDataItem {Id = id};
-            await connection.Load(dataItem);
+            connection.Load(dataItem);
             return dataItem;
         }
 
         // POST api/<BaseController>
         [HttpPost]
-        public async Task Post([FromBody] TDataItem dataItem)
+        public void Post([FromBody] TDataItem dataItem)
         {
             MyProjectsConnection connection
                 = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
-            await connection.Save(dataItem);
+            connection.Save(dataItem);
         }
 
         // PUT api/<BaseController>/5
@@ -59,13 +59,13 @@ namespace My.Projects.Web.Controllers
 
         // DELETE api/<BaseController>/5
         [HttpDelete("{id}")]
-        public async Task Delete(Guid id)
+        public void Delete(Guid id)
         {
             TDataItem dataItem = new TDataItem {Id = id};
 
             MyProjectsConnection connection
                 = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
-            await connection.Delete(dataItem);
+            connection.Delete(dataItem);
         }
     }
 }

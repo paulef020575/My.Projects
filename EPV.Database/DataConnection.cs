@@ -89,7 +89,7 @@ namespace EPV.Database
         /// </summary>
         /// <typeparam name="TDataItem">тип объектов</typeparam>
         /// <returns>список объектов</returns>
-        public virtual async Task<IList<TDataItem>> LoadList<TDataItem>()
+        public virtual IList<TDataItem> LoadList<TDataItem>()
             where TDataItem : DataItem, new()
         {
             List<TDataItem> dataItems = new List<TDataItem>();
@@ -99,9 +99,9 @@ namespace EPV.Database
             {
                 TDbCommand command = GetCommand(query, connection);
                 connection.Open();
-                using (DbDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection))
+                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
                 {
-                    while (await reader.ReadAsync())
+                    while (reader.Read())
                     {
                         TDataItem dataItem = new TDataItem();
                         dataItem.ReadProperties(reader);
@@ -119,7 +119,7 @@ namespace EPV.Database
 
         #region Load
 
-        public virtual async Task<TDataItem> Load<TDataItem>(TDataItem item)
+        public virtual TDataItem Load<TDataItem>(TDataItem item)
             where TDataItem : DataItem, new()
         {
             string query = QueryBuilder.GetLoadQuery(item),
@@ -132,9 +132,9 @@ namespace EPV.Database
 
                 connection.Open();
 
-                using (DbDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.CloseConnection))
+                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
                 {
-                    if (await reader.ReadAsync())
+                    if (reader.Read())
                     {
                         item.ReadProperties(reader);
                         reader.Close();
@@ -143,7 +143,7 @@ namespace EPV.Database
                     }
                     else
                     {
-                        await reader.CloseAsync();
+                        reader.Close();
                         throw new ArgumentException("Not found record with the ID");
                     }
 
@@ -155,20 +155,20 @@ namespace EPV.Database
 
         #region Save
 
-        public virtual async Task Save<TDataItem>(TDataItem dataItem)
+        public virtual void Save<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem, new()
         {
             if (dataItem.Id.Equals(Guid.Empty))
-                await Insert(dataItem);
+                Insert(dataItem);
             else
-                await Update(dataItem);
+                Update(dataItem);
         }
 
         #endregion
 
         #region Insert
 
-        public virtual async Task Insert<TDataItem>(TDataItem dataItem)
+        public virtual void Insert<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem
         {
             string query = QueryBuilder.GetInsertQuery<TDataItem>();
@@ -178,9 +178,9 @@ namespace EPV.Database
                 TDbCommand command = GetCommand(query, connection);
                 AddParameters(command, QueryBuilder.GetQueryParameters(dataItem));
 
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-                await  connection.CloseAsync();
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -188,7 +188,7 @@ namespace EPV.Database
 
         #region Update
 
-        public virtual async Task Update<TDataItem>(TDataItem dataItem)
+        public virtual void Update<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem
         {
             string query = QueryBuilder.GetUpdateQuery<TDataItem>();
@@ -198,9 +198,9 @@ namespace EPV.Database
                 TDbCommand command = GetCommand(query, connection);
                 AddParameters(command, QueryBuilder.GetQueryParameters(dataItem));
 
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 
@@ -213,7 +213,7 @@ namespace EPV.Database
         /// </summary>
         /// <typeparam name="TDataItem">тип данных</typeparam>
         /// <param name="item">объект данных</param>
-        public virtual async Task Delete<TDataItem>(TDataItem item)
+        public virtual void Delete<TDataItem>(TDataItem item)
             where TDataItem : DataItem, new()
         {
             string query = QueryBuilder.GetDeleteQuery(item),
@@ -224,9 +224,9 @@ namespace EPV.Database
                 TDbCommand command = GetCommand(query, connection);
                 AddParameters(command, new Dictionary<string, object> { { idColumn, item.Id } });
 
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-                await connection.CloseAsync();
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
             }
         }
 

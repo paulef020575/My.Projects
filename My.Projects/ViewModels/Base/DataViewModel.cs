@@ -47,7 +47,7 @@ namespace My.Projects.ViewModels.Base
         ///     загружает данные для обработки
         /// </summary>
         /// <returns></returns>
-        protected abstract Task<object> GetData(LoaderArguments loaderArguments);
+        protected abstract object GetData(LoaderArguments loaderArguments);
 
         #endregion
 
@@ -63,38 +63,40 @@ namespace My.Projects.ViewModels.Base
 
         #region LoadData
 
-        public async Task LoadData()
+        public override void LoadData()
         {
             startProgress(this, "Загрузка данных");
-            object data = await GetData(new LoaderArguments(Connector));
-            SetData(data);
+            BackgroundWorker loader = new BackgroundWorker();
+            loader.DoWork += Loader_DoWork;
+            loader.RunWorkerCompleted += Loader_RunWorkerCompleted;
+            loader.RunWorkerAsync(new LoaderArguments(Connector));
+        }
+
+
+        private void Loader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                if (e.Error is HttpRequestException)
+                {
+                    _onError?.Invoke(this, (string)Application.Current.Resources["ApiError"]);
+                    SetData(null);
+                }
+            }
+            else
+            {
+                SetData(e.Result);
+            }
+
             finishProgress(this, "");
         }
 
-        //private void Loader_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        //{
-        //    if (e.Error != null)
-        //    {
-        //        if (e is HttpRequestException)
-        //        {
-        //            _onError?.Invoke(this, (string) Application.Current.Resources["ApiError"]);
-        //            SetData(null);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        SetData(e.Result);
-        //    }
+        private void Loader_DoWork(object sender, DoWorkEventArgs e)
+        {
+            LoaderArguments loaderArguments = (LoaderArguments)e.Argument;
 
-        //    finishProgress(this, "");
-        //}
-
-        //private void Loader_DoWork(object sender, DoWorkEventArgs e)
-        //{
-        //    LoaderArguments loaderArguments = (LoaderArguments)e.Argument;
-
-        //        e.Result = await GetData(loaderArguments);
-        //}
+            e.Result = GetData(loaderArguments);
+        }
 
         #endregion
 

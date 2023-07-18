@@ -12,6 +12,8 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Views.xaml" />
+                <ResourceDictionary Source="Resources/ErrorMessages.xaml" />
+                <ResourceDictionary Source="Resources/CommonMessages.xaml" />
             </ResourceDictionary.MergedDictionaries> 
         </ResourceDictionary>
     </Application.Resources>

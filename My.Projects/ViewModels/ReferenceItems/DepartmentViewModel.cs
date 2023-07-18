@@ -1,15 +1,20 @@
-﻿using My.Projects.Classes.References;
+﻿using EPV.Database;
+using My.Projects.Classes.References;
 using My.Projects.ViewModels.Base;
 
 namespace My.Projects.ViewModels.ReferenceItems
 {
     public class DepartmentViewModel : DataItemViewModel<Department>
     {
+        private IConnector connector;
+
+        public DepartmentViewModel(IConnector connector, Department department = null) : base(connector, department) { }
+
         #region Properties
 
         #region Title
 
-        public override string Title => DataItem.Name;
+        public override string Title => DataItem?.Name;
 
         #endregion
 

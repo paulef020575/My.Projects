@@ -56,19 +56,18 @@ namespace My.Projects.Client
         /// </summary>
         /// <typeparam name="TDataItem">тип объекта</typeparam>
         /// <returns>список объектов</returns>
-        public virtual async Task<IList<TDataItem>> LoadList<TDataItem>()
+        public virtual IList<TDataItem> LoadList<TDataItem>()
             where TDataItem : DataItem, new()
         {
                 TDataItem[] itemList = new TDataItem[0];
 
-                HttpResponseMessage response = await HttpClient.GetAsync($"API/{typeof(TDataItem).Name}");
+                HttpResponseMessage response = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}").GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    itemList = await response.Content.ReadAsAsync<TDataItem[]>();
+                    itemList = response.Content.ReadAsAsync<TDataItem[]>().GetAwaiter().GetResult();
                 }
 
-                Thread.Sleep(5000);
                 return itemList?.ToList();
         }
 
@@ -83,16 +82,16 @@ namespace My.Projects.Client
         /// <typeparam name="TDataItem">тип объекта</typeparam>
         /// <param name="id">Идентификатор записи</param>
         /// <returns>объект с сайта</returns>
-        public async Task<TDataItem> Load<TDataItem>(Guid id)
+        public TDataItem Load<TDataItem>(Guid id)
             where TDataItem : DataItem, new()
         {
             TDataItem item = null;
 
             HttpResponseMessage response 
-                = await HttpClient.GetAsync($"API/{typeof(TDataItem).Name}/{id}");
+                = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}/{id}").GetAwaiter().GetResult();
 
             if (response.IsSuccessStatusCode)
-                item = await response.Content.ReadAsAsync<TDataItem>();
+                item = response.Content.ReadAsAsync<TDataItem>().GetAwaiter().GetResult();
 
             return item;
         }
@@ -103,10 +102,10 @@ namespace My.Projects.Client
         /// <typeparam name="TDataItem">Тип объекта данных</typeparam>
         /// <param name="dataItem">объект данных</param>
         /// <returns>копия объекта</returns>
-        public async Task<TDataItem> Load<TDataItem>(TDataItem dataItem)
+        public TDataItem Load<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem, new()
         {
-            return await Load<TDataItem>(dataItem.Id);
+            return Load<TDataItem>(dataItem.Id);
         }
 
         #endregion
@@ -119,12 +118,12 @@ namespace My.Projects.Client
         /// <typeparam name="TDataItem">тип объекта данных</typeparam>
         /// <param name="dataItem">объект для сохранения</param>
         /// <returns></returns>
-        public async Task Save<TDataItem>(TDataItem dataItem)
+        public void Save<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem, new()
         {
             JsonContent content = JsonContent.Create(dataItem);
             HttpResponseMessage response 
-                = await HttpClient.PostAsJsonAsync($"API/{typeof(TDataItem).Name}", dataItem);
+                = HttpClient.PostAsJsonAsync($"API/{typeof(TDataItem).Name}", dataItem).GetAwaiter().GetResult();
         }
 
         #endregion
@@ -137,11 +136,11 @@ namespace My.Projects.Client
         /// <typeparam name="TDataItem">тип объекта</typeparam>
         /// <param name="id">идентификатор объекта</param>
         /// <returns></returns>
-        public async Task Delete<TDataItem>(Guid id)
+        public void Delete<TDataItem>(Guid id)
             where TDataItem : DataItem, new()
         {
             HttpResponseMessage response
-                = await HttpClient.DeleteAsync($"API/{typeof(TDataItem).Name}/{id}");
+                = HttpClient.DeleteAsync($"API/{typeof(TDataItem).Name}/{id}").GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -150,10 +149,10 @@ namespace My.Projects.Client
         /// <typeparam name="TDataItem">тип объекта</typeparam>
         /// <param name="dataItem">объект данных</param>
         /// <returns></returns>
-        public async Task Delete<TDataItem>(TDataItem dataItem)
+        public void Delete<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem, new()
         {
-            await Delete<TDataItem>(dataItem.Id);
+            Delete<TDataItem>(dataItem.Id);
         }
 
         #endregion
