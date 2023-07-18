@@ -18,11 +18,12 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Наименование" Margin="5 5 20 5" Grid.Row="0" Grid.Column="0"/>
-        <TextBox Text="{Binding Name}" Margin="5" Grid.Row="0" Grid.Column="1" />
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                 Margin="5" Grid.Row="0" Grid.Column="1" />
 
         <UniformGrid HorizontalAlignment="Right" Grid.Row="1" Grid.ColumnSpan="2" Rows="1" Columns="2">
             <Button Margin="5" Padding="5" Command="{Binding SaveCommand}">Сохранить</Button>
-            <Button Margin="5" Padding="5" Command="{Binding CloseCommand}">Закрыть</Button>
+            <Button Margin="5" Padding="5" Command="{Binding CancelCommand}">Закрыть</Button>
         </UniformGrid>
     </Grid>
 </UserControl>

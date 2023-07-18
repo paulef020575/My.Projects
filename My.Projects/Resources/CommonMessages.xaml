@@ -4,4 +4,7 @@
     <system:String x:Key="DataSaved">
         Данные сохранены
     </system:String> 
+    <system:String x:Key="DataSaving">
+        Сохранение...
+    </system:String>
 </ResourceDictionary>

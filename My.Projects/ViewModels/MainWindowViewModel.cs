@@ -207,8 +207,8 @@ namespace My.Projects.ViewModels
             viewModel.OnStatusMessage += ShowStatusMessage;
             viewModel.OnSwitchToViewModel += SwitchToViewModel;
 
-            CurrentViewModel = viewModel;
             viewModel.LoadData();
+            CurrentViewModel = viewModel;
         }
 
         #endregion

@@ -27,7 +27,7 @@ namespace My.Projects.ViewModels.Base
         /// <remarks>
         ///     Используется для загрузки данных
         /// </remarks>
-        protected Guid Id { get; private set; }
+        protected Guid Id => DataItem.Id;
 
         #endregion
 
@@ -70,10 +70,7 @@ namespace My.Projects.ViewModels.Base
         public DataItemViewModel(IConnector connector, TDataItem dataItem = null)
             : base(connector)
         {
-            if (dataItem == null)
-                Id = Guid.Empty;
-            else
-                Id = dataItem.Id;
+            DataItem = dataItem ?? new TDataItem();
         }
 
         #endregion
@@ -88,13 +85,12 @@ namespace My.Projects.ViewModels.Base
         /// <returns></returns>
         protected override object GetData(LoaderArguments loaderArguments)
         {
-            TDataItem item = new TDataItem {Id = this.Id};
             if (Id != Guid.Empty)
             { 
                 return loaderArguments.Connector.Load<TDataItem>(DataItem);
             }
 
-            return item;
+            return DataItem;
         }
 
         #endregion
@@ -127,12 +123,20 @@ namespace My.Projects.ViewModels.Base
             PropertyInfo propertyInfo = typeof(TDataItem).GetProperty(propertyName);
             if (propertyInfo != null)
             {
-                T currentValue = (T) propertyInfo.GetValue(this);
-
-                if (value == null || !value.Equals(currentValue))
+                try
                 {
-                    propertyInfo.SetValue(DataItem, value);
-                    OnPropertyChanged(propertyName);
+                    T currentValue = (T)propertyInfo.GetValue(DataItem);
+
+                    if (value == null || !value.Equals(currentValue))
+                    {
+                        propertyInfo.SetValue(DataItem, value);
+                        OnPropertyChanged(propertyName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
                 }
             }
         }
@@ -144,9 +148,11 @@ namespace My.Projects.ViewModels.Base
 
         protected virtual void SaveData()
         {
+            startProgress(this, (string) Application.Current.Resources["DataSaving"]);
             BackgroundWorker saverWorker = new BackgroundWorker();
             saverWorker.DoWork += SaverWorker_DoWork;
             saverWorker.RunWorkerCompleted += SaverWorker_RunWorkerCompleted;
+            saverWorker.RunWorkerAsync(new LoaderArguments(Connector));
         }
 
         private void SaverWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -160,7 +166,8 @@ namespace My.Projects.ViewModels.Base
             }
             else
             {
-                _onStatusMessage?.Invoke(this, (string)Application.Current.Resources["DataSaved"]);
+                finishProgress(this, (string) Application.Current.Resources["DataSaved"]);
+                _onSwitchToViewModel(this, PreviousViewModel);
             }
         }
 
@@ -172,6 +179,52 @@ namespace My.Projects.ViewModels.Base
 
 
         #endregion
+
+        #region CancelEdit
+
+        private void CancelEdit()
+        {
+            _onSwitchToViewModel(this, PreviousViewModel);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Commands
+
+        #region SaveCommand
+
+        private RelayCommand _saveCommand;
+
+        public RelayCommand SaveCommand
+        {
+            get
+            {
+                if (_saveCommand == null)
+                    _saveCommand = new RelayCommand(x => SaveData(), x => IsModified);
+                return _saveCommand;
+            }
+        }
+
+        #endregion
+
+        #region CancelCommand
+
+        private RelayCommand _cancelCommand;
+
+        public RelayCommand CancelCommand
+        {
+            get
+            {
+                if (_cancelCommand == null)
+                    _cancelCommand = new RelayCommand(x=> CancelEdit());
+                return _cancelCommand;
+            }
+        }
+
+        #endregion
+
 
         #endregion
 
