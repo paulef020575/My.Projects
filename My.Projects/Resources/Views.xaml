@@ -7,6 +7,6 @@
         <views:DepartmentListView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type referenceItems:DepartmentViewModel}">
-        <views:DepartmentView />
+        <views:DataItemView />
     </DataTemplate>
 </ResourceDictionary>

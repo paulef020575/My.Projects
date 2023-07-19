@@ -17,9 +17,16 @@ namespace My.Projects.Web.Controllers
         where TDataItem : DataItem, new()
     {
         private IConfiguration _configuration;
+        private string ConnectionString { get; }
+
         public BaseController(IConfiguration configuration)
         {
             _configuration = configuration;
+            if (Environment.MachineName == "KAR-GIT-2")
+                ConnectionString = _configuration.GetConnectionString("KpProjectsConnection");
+            else
+                ConnectionString = _configuration.GetConnectionString("MyProjectsConnection");
+                    
         }
         
         // GET: api/<BaseController>
@@ -27,7 +34,7 @@ namespace My.Projects.Web.Controllers
         public IList<TDataItem> Get()
         {
             MyProjectsConnection connection 
-                = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
+                = new MyProjectsConnection(ConnectionString);
             return connection.LoadList<TDataItem>();
         }
 
@@ -36,7 +43,7 @@ namespace My.Projects.Web.Controllers
         public TDataItem Get(Guid id)
         {
             MyProjectsConnection connection
-                = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
+                = new MyProjectsConnection(ConnectionString);
             TDataItem dataItem = new TDataItem {Id = id};
             connection.Load(dataItem);
             return dataItem;
@@ -47,7 +54,7 @@ namespace My.Projects.Web.Controllers
         public void Post([FromBody] TDataItem dataItem)
         {
             MyProjectsConnection connection
-                = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
+                = new MyProjectsConnection(ConnectionString);
             connection.Save(dataItem);
         }
 
@@ -64,7 +71,7 @@ namespace My.Projects.Web.Controllers
             TDataItem dataItem = new TDataItem {Id = id};
 
             MyProjectsConnection connection
-                = new MyProjectsConnection(_configuration.GetConnectionString("MyProjectsConnection"));
+                = new MyProjectsConnection(ConnectionString);
             connection.Delete(dataItem);
         }
     }
