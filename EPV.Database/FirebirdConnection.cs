@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using EPV.Data.DataItems;
@@ -38,6 +39,8 @@ namespace EPV.Database
 
         public override void Save<TDataItem>(TDataItem dataItem)
         {
+            if (dataItem.Id == Guid.Empty) dataItem.Id = Guid.NewGuid();
+
             string query = QueryBuilder.GetUpdateOrInsertQuery(dataItem);
 
             using (FbConnection connection = GetConnection())

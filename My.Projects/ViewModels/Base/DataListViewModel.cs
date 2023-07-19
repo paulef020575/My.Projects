@@ -99,7 +99,16 @@ namespace My.Projects.ViewModels.Base
 
         #region GetDataItemViewModel
 
-        protected abstract DataItemViewModel<TDataItem> GetDataItemViewModel(TDataItem dataItem);
+        protected abstract DataItemViewModel<TDataItem> GetDataItemViewModel(TDataItem dataItem = null);
+
+        #endregion
+
+        #region AddItem
+
+        private void AddItem()
+        {
+            _onSwitchToViewModel(this, GetDataItemViewModel());
+        }
 
         #endregion
 
@@ -136,6 +145,22 @@ namespace My.Projects.ViewModels.Base
                     _editItemCommand = new RelayCommand(x => EditItem((TDataItem)x), x => x is TDataItem);
 
                 return _editItemCommand;
+            }
+        }
+
+        #endregion
+
+        #region AddItemCommand
+
+        private RelayCommand _addItemCommand;
+
+        public RelayCommand AddItemCommand
+        {
+            get
+            {
+                if (_addItemCommand == null)
+                    _addItemCommand = new RelayCommand(x => AddItem());
+                return _addItemCommand;
             }
         }
 

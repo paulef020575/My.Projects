@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EPV.Data.DataItems;
 using EPV.Database;
+using Newtonsoft.Json;
 
 namespace My.Projects.Client
 {
@@ -121,7 +123,6 @@ namespace My.Projects.Client
         public void Save<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem, new()
         {
-            JsonContent content = JsonContent.Create(dataItem);
             HttpResponseMessage response 
                 = HttpClient.PostAsJsonAsync($"API/{typeof(TDataItem).Name}", dataItem).GetAwaiter().GetResult();
         }
@@ -153,6 +154,25 @@ namespace My.Projects.Client
             where TDataItem : DataItem, new()
         {
             Delete<TDataItem>(dataItem.Id);
+        }
+
+        #endregion
+
+        #region LoadReferences
+
+        public IList<Reference<TDataItem>> LoaReferences<TDataItem>() 
+            where TDataItem : DataItem, new()
+        {
+            Reference<TDataItem>[] itemList = new Reference<TDataItem>[0];
+
+            HttpResponseMessage response = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}/LoadReferences").GetAwaiter().GetResult();
+
+            if (response.IsSuccessStatusCode)
+            {
+                itemList = response.Content.ReadAsAsync<Reference<TDataItem>[]>().GetAwaiter().GetResult();
+            }
+
+            return itemList?.ToList();
         }
 
         #endregion

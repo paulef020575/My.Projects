@@ -13,5 +13,7 @@ namespace EPV.Database
         void Save<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new();
 
         void Delete<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new();
+
+        IList<Reference<TDataItem>> LoaReferences<TDataItem>() where TDataItem : DataItem, new();
     }
 }

@@ -9,6 +9,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -18,5 +19,10 @@
         <TextBlock Text="Наименование" Margin="5 5 20 5" Grid.Row="0" Grid.Column="0" />
         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
                  Margin="5" Grid.Row="0" Grid.Column="1" />
+
+        <TextBlock Text="В составе" Margin="5 5 20 5" Grid.Row="1" Grid.Column="0" />
+        <ComboBox Margin="5" Grid.Row="1" Grid.Column="1"
+                  ItemsSource="{Binding DepartmentList, IsAsync=True}" 
+                  SelectedItem="{Binding IdParent, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>

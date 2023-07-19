@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using EPV.Data.Attributes;
+using EPV.Data.Conditions;
 using EPV.Data.DataItems;
 
 namespace EPV.Data.Queries
@@ -144,6 +145,18 @@ namespace EPV.Data.Queries
             string query = "DELETE FROM {0} WHERE {1}";
 
             return string.Format(query, GetTableName<TDataItem>(), GetIdCondition<TDataItem>());
+        }
+
+        #endregion
+
+        #region GetReferencesQuery
+
+        public static string GetReferencesList<TDataItem>(ICondition conditions = null)
+            where TDataItem : DataItem, new()
+        {
+            string query = "SELECT {0} AS Id, {1} AS Description FROM {2}";
+            return string.Format(query, GetIdColumn<TDataItem>(), GetDescriptionColumn<TDataItem>(),
+                GetTableName<TDataItem>());
         }
 
         #endregion

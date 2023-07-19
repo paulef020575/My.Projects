@@ -7,11 +7,10 @@ namespace My.Projects.Classes.References
     [Description(nameof(Department.Name))]
     public class Department : DataItem
     {
-        [DataColumn]
-        public string Name { get; set; }
+        [DataColumn] public string Name { get; set; } = "Новое подразделение";
 
         [DataColumn]
-        public Reference<Department> IdParent { get; } = new Reference<Department>();
+        public Reference<Department> IdParent { get; set; } = new Reference<Department>();
 
     }
 }

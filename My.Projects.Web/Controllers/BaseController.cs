@@ -74,5 +74,12 @@ namespace My.Projects.Web.Controllers
                 = new MyProjectsConnection(ConnectionString);
             connection.Delete(dataItem);
         }
+
+        [HttpGet("[action]")]
+        public IList<Reference<TDataItem>> LoadReferences()
+        {
+            MyProjectsConnection connection = new MyProjectsConnection(ConnectionString);
+            return connection.LoaReferences<TDataItem>();
+        }
     }
 }

@@ -238,6 +238,36 @@ namespace EPV.Database
 
         #endregion
 
+
+        #region LoadReferences
+
+        public IList<Reference<TDataItem>> LoaReferences<TDataItem>() where TDataItem : DataItem, new()
+        {
+            List<Reference<TDataItem>> references = new List<Reference<TDataItem>>();
+
+            string query = QueryBuilder.GetReferencesList<TDataItem>();
+            using (TDbConnection connection = GetConnection())
+            {
+                TDbCommand command = GetCommand(query, connection);
+                connection.Open();
+                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    while (reader.Read())
+                    {
+                        references.Add(new Reference<TDataItem>(reader));
+                    }
+
+                    reader.Close();
+                }
+            }
+
+            return references;
+        }
+
+        #endregion
+
+
+
         #endregion
     }
 }
