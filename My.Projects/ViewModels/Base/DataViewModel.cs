@@ -18,7 +18,7 @@ namespace My.Projects.ViewModels.Base
         /// <summary>
         ///     Коннектор для получения данных
         /// </summary>
-        public IConnector Connector => DataChannel.Connector;
+        public IDataConnection Connector => DataChannel.Connector;
 
         #endregion
 

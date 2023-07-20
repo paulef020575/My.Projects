@@ -8,4 +8,8 @@
     <Folder Include="Queries\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EPV.Database\EPV.Database.csproj" />
+  </ItemGroup>
+
 </Project>

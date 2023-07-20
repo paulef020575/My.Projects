@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Cryptography;
+using EPV.Database;
 
 namespace EPV.Data.Conditions
 {
@@ -26,14 +27,14 @@ namespace EPV.Data.Conditions
             return $"({expression})";
         }
 
-        public Dictionary<string, object> GetParameters()
+        public CommandParameters GetParameters()
         {
             if (!_isNumerated) SetNum();
 
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            CommandParameters result = new CommandParameters();
             foreach (ICondition condition in this)
             {
-                Dictionary<string, object> part = condition.GetParameters();
+                CommandParameters part = condition.GetParameters();
                 foreach (string key in part.Keys)
                 {
                     result.Add(key, part[key]);

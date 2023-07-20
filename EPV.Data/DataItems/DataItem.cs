@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Reflection;
 using EPV.Data.Attributes;
+using EPV.Data.DataGetters;
 using EPV.Data.Queries;
 
 namespace EPV.Data.DataItems
@@ -34,6 +35,15 @@ namespace EPV.Data.DataItems
         #endregion
 
         #region Methods
+
+        #region Load
+
+        public virtual void Load(IDataLink link)
+        {
+            link.Load(this);
+        }
+
+        #endregion
 
         #region ReadProperties
 

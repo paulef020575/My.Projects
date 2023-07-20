@@ -5,15 +5,19 @@ namespace EPV.Database
 {
     public class MsSqlConnection : DataConnection<SqlConnection, SqlCommand>
     {
+        private MsSqlConnection() { }
+
         protected override SqlConnection GetConnection()
         {
             return new SqlConnection(ConnectionString);
         }
 
-        protected override void AddParameters(SqlCommand command, Dictionary<string, object> parameters)
+        protected override void FillParameters(SqlCommand command, CommandParameters parameters = null)
         {
-            foreach (string key in parameters.Keys)
-                command.Parameters.AddWithValue(key, parameters[key]);
+            if (parameters != null)
+                foreach (string key in parameters.Keys)
+                    command.Parameters.AddWithValue(key, parameters[key]);
         }
+
     }
 }

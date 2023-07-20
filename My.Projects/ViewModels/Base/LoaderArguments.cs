@@ -4,9 +4,9 @@ namespace My.Projects.ViewModels.Base
 {
     public class LoaderArguments
     {
-        public IConnector Connector { get; private set; }
+        public IDataConnection Connector { get; private set; }
 
-        public LoaderArguments(IConnector connector)
+        public LoaderArguments(IDataConnection connector)
         {
             Connector = connector;
         }

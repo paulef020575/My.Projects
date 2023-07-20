@@ -2,7 +2,7 @@
 
 namespace My.Projects.Data
 {
-    public interface IMyConnector : IConnector
+    public interface IMyConnector : IDataConnection
     {
     }
 }

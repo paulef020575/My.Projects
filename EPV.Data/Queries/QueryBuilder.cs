@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using EPV.Data.Attributes;
 using EPV.Data.Conditions;
 using EPV.Data.DataItems;
+using EPV.Database;
 
 namespace EPV.Data.Queries
 {
@@ -392,10 +393,10 @@ namespace EPV.Data.Queries
         /// <typeparam name="TDataItem">тип данных объекта</typeparam>
         /// <param name="dataItem">объект данных</param>
         /// <returns>набор параметров для запроса</returns>
-        public static Dictionary<string, object> GetQueryParameters<TDataItem>(TDataItem dataItem)
+        public static CommandParameters GetQueryParameters<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem
         {
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            CommandParameters result = new CommandParameters();
 
             PropertyInfo[] properties = typeof(TDataItem).GetProperties();
             foreach (PropertyInfo property in properties)

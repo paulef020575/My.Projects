@@ -41,7 +41,7 @@ namespace My.Projects.ViewModels
         /// <summary>
         ///     объект коннектора данных
         /// </summary>
-        private IConnector ApiConnector => DataChannel.Connector;
+        private IDataConnection ApiConnector => DataChannel.Connector;
 
         #endregion
 

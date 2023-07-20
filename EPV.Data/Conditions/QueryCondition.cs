@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using EPV.Database;
 
 namespace EPV.Data.Conditions
 {
@@ -50,9 +51,9 @@ namespace EPV.Data.Conditions
             }
         }
 
-        public Dictionary<string, object> GetParameters()
+        public CommandParameters GetParameters()
         {
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            CommandParameters result = new CommandParameters();
             if (Comparison.HasParameter()) result.Add(ParameterName, Value);
             return result;
         }
