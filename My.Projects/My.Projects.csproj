@@ -14,7 +14,7 @@
     <ProjectReference Include="..\EPV.Database\EPV.Database.csproj" />
     <ProjectReference Include="..\EPV.Data\EPV.Data.csproj" />
     <ProjectReference Include="..\My.Projects.Classes\My.Projects.Classes.csproj" />
-    <ProjectReference Include="..\My.Projects.Client\My.Projects.Client.csproj" />
+    <ProjectReference Include="..\My.Projects.Client\My.Projects.Data.csproj" />
   </ItemGroup>
 
 </Project>

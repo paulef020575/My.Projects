@@ -1,10 +1,8 @@
 ﻿
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using EPV.Data.Conditions;
-using My.Projects.Client;
+using My.Projects.Data;
 using My.Projects.ViewModels.Base;
 using My.Projects.ViewModels.References;
 
@@ -42,7 +40,7 @@ namespace My.Projects.ViewModels
         /// <summary>
         ///     объект коннектора данных
         /// </summary>
-        private ApiConnector ApiConnector { get; }
+        private MyProjectsApi ApiConnector { get; }
 
         #endregion
 
@@ -147,7 +145,7 @@ namespace My.Projects.ViewModels
 
         public MainWindowViewModel()
         {
-            ApiConnector = new ApiConnector((string)Application.Current.Resources["ApiUri"]);
+            ApiConnector = new MyProjectsApi((string)Application.Current.Resources["ApiUri"]);
             InProgress = false;
             ProgramStatus = "Everything is OK";
             //DispatcherTimer timer = new DispatcherTimer{ Interval = new TimeSpan(0, 0, 5)};

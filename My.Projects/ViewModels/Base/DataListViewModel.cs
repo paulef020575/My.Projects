@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Schema;
 using EPV.Data.DataItems;
-using EPV.Database;
+using My.Projects.Data;
 
 namespace My.Projects.ViewModels.Base
 {
@@ -51,7 +48,7 @@ namespace My.Projects.ViewModels.Base
 
         protected DataListViewModel() : base() { }
 
-        public DataListViewModel(IConnector connector) : base(connector)
+        public DataListViewModel(IMyConnector connector) : base(connector)
         {
             Items = new ObservableCollection<TDataItem>();
         }

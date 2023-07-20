@@ -1,11 +1,7 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Net.Http;
-using System.Net.Mime;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using EPV.Database;
+using My.Projects.Data;
 
 namespace My.Projects.ViewModels.Base
 {
@@ -14,14 +10,14 @@ namespace My.Projects.ViewModels.Base
     /// </summary>
     public abstract class DataViewModel : ViewModel
     {
-        #region MyRegion
+        #region Properties
 
         #region Connector
 
         /// <summary>
         ///     Коннектор для получения данных
         /// </summary>
-        public IConnector Connector { get; private set; }
+        public IMyConnector Connector { get; private set; }
 
         #endregion
 
@@ -32,7 +28,7 @@ namespace My.Projects.ViewModels.Base
 
         protected DataViewModel() { }
 
-        public DataViewModel(IConnector connector)
+        public DataViewModel(IMyConnector connector)
         {
             Connector = connector;
         }

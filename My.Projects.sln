@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServer", "WebServer", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EPV.Database", "EPV.Database\EPV.Database.csproj", "{2F11AC6C-BCFF-4F17-A2EB-ACE8A271872F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Projects.Web", "My.Projects.Web\My.Projects.Web.csproj", "{509F30AB-E629-4A17-B40D-E0EB35E8ED03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My.Projects.Web", "My.Projects.Web\My.Projects.Web.csproj", "{509F30AB-E629-4A17-B40D-E0EB35E8ED03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "My.Projects.Client", "My.Projects.Client\My.Projects.Client.csproj", "{4C539BF1-24F3-43DC-BB4D-15DC4B9E48C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "My.Projects.Data", "My.Projects.Client\My.Projects.Data.csproj", "{4C539BF1-24F3-43DC-BB4D-15DC4B9E48C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,10 +3,9 @@ using System.ComponentModel;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using EPV.Data.DataItems;
-using EPV.Database;
+using My.Projects.Data;
 
 namespace My.Projects.ViewModels.Base
 {
@@ -67,7 +66,7 @@ namespace My.Projects.ViewModels.Base
         {
         }
 
-        public DataItemViewModel(IConnector connector, TDataItem dataItem = null)
+        public DataItemViewModel(IMyConnector connector, TDataItem dataItem = null)
             : base(connector)
         {
             DataItem = dataItem ?? new TDataItem();

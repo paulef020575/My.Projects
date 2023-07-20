@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Buffers;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using EPV.Data.DataItems;
-using EPV.Database;
-using Newtonsoft.Json;
 
-namespace My.Projects.Client
+namespace EPV.Database
 {
     /// <summary>
     ///     API-коннектор для работы с данными
@@ -61,16 +53,16 @@ namespace My.Projects.Client
         public virtual IList<TDataItem> LoadList<TDataItem>()
             where TDataItem : DataItem, new()
         {
-                TDataItem[] itemList = new TDataItem[0];
+            TDataItem[] itemList = new TDataItem[0];
 
-                HttpResponseMessage response = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}").GetAwaiter().GetResult();
+            HttpResponseMessage response = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}").GetAwaiter().GetResult();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    itemList = response.Content.ReadAsAsync<TDataItem[]>().GetAwaiter().GetResult();
-                }
+            if (response.IsSuccessStatusCode)
+            {
+                itemList = response.Content.ReadAsAsync<TDataItem[]>().GetAwaiter().GetResult();
+            }
 
-                return itemList?.ToList();
+            return itemList?.ToList();
         }
 
 
@@ -89,7 +81,7 @@ namespace My.Projects.Client
         {
             TDataItem item = null;
 
-            HttpResponseMessage response 
+            HttpResponseMessage response
                 = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}/{id}").GetAwaiter().GetResult();
 
             if (response.IsSuccessStatusCode)
@@ -113,7 +105,7 @@ namespace My.Projects.Client
         #endregion
 
         #region Save
-        
+
         /// <summary>
         ///     Передает объект на сайт для сохранения
         /// </summary>
@@ -123,7 +115,7 @@ namespace My.Projects.Client
         public void Save<TDataItem>(TDataItem dataItem)
             where TDataItem : DataItem, new()
         {
-            HttpResponseMessage response 
+            HttpResponseMessage response
                 = HttpClient.PostAsJsonAsync($"API/{typeof(TDataItem).Name}", dataItem).GetAwaiter().GetResult();
         }
 
@@ -160,7 +152,7 @@ namespace My.Projects.Client
 
         #region LoadReferences
 
-        public IList<Reference<TDataItem>> LoaReferences<TDataItem>() 
+        public IList<Reference<TDataItem>> LoaReferences<TDataItem>()
             where TDataItem : DataItem, new()
         {
             Reference<TDataItem>[] itemList = new Reference<TDataItem>[0];

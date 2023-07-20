@@ -1,17 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using EPV.Data.DataItems;
-using EPV.Database;
 using My.Projects.Classes.References;
+using My.Projects.Data;
 using My.Projects.ViewModels.Base;
 
 namespace My.Projects.ViewModels.ReferenceItems
 {
     public class DepartmentViewModel : DataItemViewModel<Department>
     {
-        private IConnector connector;
-
-        public DepartmentViewModel(IConnector connector, Department department = null) : base(connector, department) { }
+        public DepartmentViewModel(IMyConnector connector, Department department = null) : base(connector, department) { }
 
         #region Properties
 
@@ -68,7 +66,8 @@ namespace My.Projects.ViewModels.ReferenceItems
 
             ObservableCollection<Reference<Department>> result = new ObservableCollection<Reference<Department>>();
             foreach (Reference<Department> reference in references)
-                result.Add(reference);
+                if (reference.Id != DataItem.Id)
+                    result.Add(reference);
 
             return result;
         }

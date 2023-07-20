@@ -1,8 +1,8 @@
 ﻿using EPV.Database;
 
-namespace My.Projects.Web.Classes
+namespace My.Projects.Data
 {
-    public class MyProjectsConnection : FirebirdConnection
+    public class MyProjectsConnection : FirebirdConnection, IMyConnector
     {
         public MyProjectsConnection(string connectionString) : base(connectionString)
         {
