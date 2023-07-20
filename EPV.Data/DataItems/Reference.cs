@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EPV.Data.DataItems
 {
-    public abstract class Reference
+    public abstract class Reference : IEquatable<Reference>
     {
         #region Id
 
@@ -27,14 +27,30 @@ namespace EPV.Data.DataItems
             Description = other.Description;
         }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
-            return base.Equals(obj as Reference);
+            return Equals(obj as Reference);
         }
 
         public bool Equals(Reference other)
         {
-            return other != null && Id.Equals(other.Id);
+            return other != null &&
+                   Id.Equals(other.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
+
+        public static bool operator ==(Reference left, Reference right)
+        {
+            return EqualityComparer<Reference>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Reference left, Reference right)
+        {
+            return !(left == right);
         }
     }
 }

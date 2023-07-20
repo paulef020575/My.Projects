@@ -22,7 +22,7 @@
 
         <TextBlock Text="В составе" Margin="5 5 20 5" Grid.Row="1" Grid.Column="0" />
         <ComboBox Margin="5" Grid.Row="1" Grid.Column="1"
-                  ItemsSource="{Binding DepartmentList, IsAsync=True}" 
+                  ItemsSource="{Binding DepartmentList}" 
                   SelectedItem="{Binding IdParent, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
 </UserControl>
