@@ -152,7 +152,7 @@ namespace EPV.Database
 
         #region LoadReferences
 
-        public IList<Reference<TDataItem>> LoaReferences<TDataItem>()
+        public IList<Reference<TDataItem>> LoadReferences<TDataItem>()
             where TDataItem : DataItem, new()
         {
             Reference<TDataItem>[] itemList = new Reference<TDataItem>[0];
@@ -162,6 +162,26 @@ namespace EPV.Database
             if (response.IsSuccessStatusCode)
             {
                 itemList = response.Content.ReadAsAsync<Reference<TDataItem>[]>().GetAwaiter().GetResult();
+            }
+
+            return itemList?.ToList();
+        }
+
+        #endregion
+
+        #region LoadReferences
+
+        public IList<TDataItem> LoadChildren<TDataItem>(string idParent, Guid id)
+            where TDataItem : DataItem, new()
+        {
+            TDataItem[] itemList = new TDataItem[0];
+
+            HttpResponseMessage response 
+                = HttpClient.GetAsync($"API/{typeof(TDataItem).Name}/LoadChildren?idParent={idParent}&id={id}").GetAwaiter().GetResult();
+
+            if (response.IsSuccessStatusCode)
+            {
+                itemList = response.Content.ReadAsAsync<TDataItem[]>().GetAwaiter().GetResult();
             }
 
             return itemList?.ToList();

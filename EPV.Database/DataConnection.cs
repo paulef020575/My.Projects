@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Threading.Tasks;
+using EPV.Data.Conditions;
 using EPV.Data.DataItems;
 using EPV.Data.Queries;
 
@@ -241,7 +242,7 @@ namespace EPV.Database
 
         #region LoadReferences
 
-        public IList<Reference<TDataItem>> LoaReferences<TDataItem>() where TDataItem : DataItem, new()
+        public IList<Reference<TDataItem>> LoadReferences<TDataItem>() where TDataItem : DataItem, new()
         {
             List<Reference<TDataItem>> references = new List<Reference<TDataItem>>();
 
@@ -266,7 +267,36 @@ namespace EPV.Database
 
         #endregion
 
+        #region LoadChildren
 
+        public IList<TDataItem> LoadChildren<TDataItem>(string IdParent, Guid id)
+            where TDataItem : DataItem, new()
+        {
+            QueryCondition queryCondition = new QueryCondition(IdParent, Comparison.Equal, id);
+            string query = QueryBuilder.GetLoadListQuery<TDataItem>(queryCondition);
+            IList<TDataItem> items = new List<TDataItem>();
+            using (TDbConnection connection = GetConnection())
+            {
+                TDbCommand command = GetCommand(query, connection);
+                AddParameters(command, queryCondition.GetParameters());
+                connection.Open();
+                using (DbDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    while (reader.Read())
+                    {
+                        TDataItem item = new TDataItem();
+                        item.ReadProperties(reader);
+                        items.Add(item);
+                    }
+
+                    reader.Close();
+                }
+            }
+
+            return items;
+        }
+
+        #endregion
 
         #endregion
     }

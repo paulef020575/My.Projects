@@ -61,13 +61,9 @@ namespace My.Projects.ViewModels.Base
         #endregion
 
         #region Constructors
-
-        protected DataItemViewModel() : base()
-        {
-        }
-
-        public DataItemViewModel(IMyConnector connector, TDataItem dataItem = null)
-            : base(connector)
+        
+        public DataItemViewModel(TDataItem dataItem = null)
+            : base()
         {
             DataItem = dataItem ?? new TDataItem();
         }

@@ -9,7 +9,7 @@ namespace My.Projects.ViewModels.ReferenceItems
 {
     public class DepartmentViewModel : DataItemViewModel<Department>
     {
-        public DepartmentViewModel(IMyConnector connector, Department department = null) : base(connector, department) { }
+        public DepartmentViewModel(Department department = null) : base(department) { }
 
         #region Properties
 
@@ -62,7 +62,7 @@ namespace My.Projects.ViewModels.ReferenceItems
 
         private ObservableCollection<Reference<Department>> GetDepartmentList()
         {
-            IList<Reference<Department>> references = Connector.LoaReferences<Department>();
+            IList<Reference<Department>> references = Connector.LoadReferences<Department>();
 
             ObservableCollection<Reference<Department>> result = new ObservableCollection<Reference<Department>>();
             foreach (Reference<Department> reference in references)

@@ -46,9 +46,7 @@ namespace My.Projects.ViewModels.Base
 
         #region Constructors
 
-        protected DataListViewModel() : base() { }
-
-        public DataListViewModel(IMyConnector connector) : base(connector)
+        public DataListViewModel() : base()
         {
             Items = new ObservableCollection<TDataItem>();
         }

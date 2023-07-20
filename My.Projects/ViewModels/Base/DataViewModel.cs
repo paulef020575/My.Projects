@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Net.Http;
 using System.Windows;
+using EPV.Database;
 using My.Projects.Data;
 
 namespace My.Projects.ViewModels.Base
@@ -17,7 +18,7 @@ namespace My.Projects.ViewModels.Base
         /// <summary>
         ///     Коннектор для получения данных
         /// </summary>
-        public IMyConnector Connector { get; private set; }
+        public IConnector Connector => DataChannel.Connector;
 
         #endregion
 
@@ -26,12 +27,7 @@ namespace My.Projects.ViewModels.Base
 
         #region Constructors
 
-        protected DataViewModel() { }
-
-        public DataViewModel(IMyConnector connector)
-        {
-            Connector = connector;
-        }
+        public DataViewModel() { }
 
         #endregion
 

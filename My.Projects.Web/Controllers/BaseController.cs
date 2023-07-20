@@ -79,7 +79,14 @@ namespace My.Projects.Web.Controllers
         public IList<Reference<TDataItem>> LoadReferences()
         {
             MyProjectsConnection connection = new MyProjectsConnection(ConnectionString);
-            return connection.LoaReferences<TDataItem>();
+            return connection.LoadReferences<TDataItem>();
+        }
+
+        [HttpGet("[action]")]
+        public IList<TDataItem> LoadChildren(string idParent, Guid id)
+        {
+            MyProjectsConnection connection = new MyProjectsConnection(ConnectionString);
+            return connection.LoadChildren<TDataItem>(idParent, id);
         }
     }
 }

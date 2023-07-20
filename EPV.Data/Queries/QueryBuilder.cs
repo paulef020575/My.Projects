@@ -45,12 +45,18 @@ namespace EPV.Data.Queries
         /// </summary>
         /// <typeparam name="TDataItem">тип объектов</typeparam>
         /// <returns>текст запроса</returns>
-        public static string GetLoadListQuery<TDataItem>()
+        public static string GetLoadListQuery<TDataItem>(ICondition conditions = null)
             where TDataItem : DataItem
         {
-            string result = "SELECT {0} FROM {1} AS T";
+            string result = "SELECT {0} FROM {1} AS T WHERE {2}",
+                conditionsString = "1 = 1";
+            if (conditions != null)
+                conditionsString = conditions.ToString();
 
-            return string.Format(result, GetSelectColumnList<TDataItem>(), GetTableName<TDataItem>());
+            return string.Format(result, 
+                GetSelectColumnList<TDataItem>(), 
+                GetTableName<TDataItem>(),
+                conditionsString);
         }
 
         #endregion

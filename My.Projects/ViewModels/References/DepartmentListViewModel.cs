@@ -9,11 +9,11 @@ namespace My.Projects.ViewModels.References
     {
         public override string Title => "Подразделения холдинга";
 
-        public DepartmentListViewModel(IMyConnector connector) : base(connector) { }
+        public DepartmentListViewModel() : base() { }
 
         protected override DataItemViewModel<Department> GetDataItemViewModel(Department dataItem = null)
         {
-            return new DepartmentViewModel(Connector, dataItem);
+            return new DepartmentViewModel(dataItem);
         }
     }
 }
