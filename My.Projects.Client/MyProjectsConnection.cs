@@ -1,8 +1,9 @@
-﻿using EPV.Database;
+﻿using EPV.Data.DataGetters;
+using EPV.Database;
 
 namespace My.Projects.Data
 {
-    public class MyProjectsConnection : FirebirdConnection, IMyConnector
+    public class MyProjectsConnection : FirebirdDataLink, IMyDataLink
     {
         public MyProjectsConnection(string connectionString) : base(connectionString)
         {

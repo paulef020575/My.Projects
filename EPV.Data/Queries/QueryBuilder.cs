@@ -310,7 +310,6 @@ namespace EPV.Data.Queries
 
         #endregion
 
-
         #region Query parts
 
         #region GetIdCondition
@@ -425,7 +424,5 @@ namespace EPV.Data.Queries
         
 
         #endregion
-
-
     }
 }

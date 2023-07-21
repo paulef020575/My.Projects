@@ -21,7 +21,7 @@ namespace EPV.Data.DataGetters
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public TDataItem Load<TDataItem>(Guid id) where TDataItem : DataItem, new()
+        public virtual TDataItem Load<TDataItem>(Guid id) where TDataItem : DataItem, new()
         {
             TDataItem item = null;
 
@@ -35,8 +35,13 @@ namespace EPV.Data.DataGetters
 
             return item;
         }
+        public virtual void Load<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new()
+        {
+            TDataItem source = Load<TDataItem>(dataItem.Id);
+            dataItem.CopyFrom(source);
+        }
 
-        public IList<TDataItem> LoadList<TDataItem>() where TDataItem : DataItem, new()
+        public virtual IList<TDataItem> LoadList<TDataItem>() where TDataItem : DataItem, new()
         {
             TDataItem[] items = new TDataItem[0];
 
@@ -51,19 +56,19 @@ namespace EPV.Data.DataGetters
             return items?.ToList();
         }
 
-        public void Save<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new()
+        public virtual void Save<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new()
         {
             HttpResponseMessage response = Client.PostAsJsonAsync($"API/{typeof(TDataItem).Name}", dataItem)
                 .GetAwaiter().GetResult();
         }
 
-        public void Delete<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new()
+        public virtual void Delete<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new()
         {
             HttpResponseMessage response = Client.DeleteAsync($"API/{typeof(TDataItem).Name}/{dataItem.Id}")
                 .GetAwaiter().GetResult();
         }
 
-        public IList<Reference<TDataItem>> LoadReferences<TDataItem>() where TDataItem : DataItem, new()
+        public virtual IList<Reference<TDataItem>> LoadReferences<TDataItem>() where TDataItem : DataItem, new()
         {
             Reference<TDataItem>[] itemList = new Reference<TDataItem>[0];
 
@@ -77,7 +82,7 @@ namespace EPV.Data.DataGetters
             return itemList?.ToList();
         }
 
-        public IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid id) where TDataItem : DataItem, new()
+        public virtual IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid id) where TDataItem : DataItem, new()
         {
             TDataItem[] itemList = new TDataItem[0];
             string uri = $"API/{typeof(TDataItem)}/LoadChildren?idParent={parentColumn}&id={id}";

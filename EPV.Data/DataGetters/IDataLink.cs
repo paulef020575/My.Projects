@@ -9,6 +9,8 @@ namespace EPV.Data.DataGetters
     {
         TDataItem Load<TDataItem>(Guid id) where TDataItem : DataItem, new();
 
+        void Load<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new();
+
         IList<TDataItem> LoadList<TDataItem>() where TDataItem : DataItem, new();
 
         void Save<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new();

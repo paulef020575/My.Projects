@@ -12,7 +12,7 @@ namespace EPV.Data.DataItems
     /// </summary>
     [Identity]
     [Description(nameof(DataItem.Id))]
-    public abstract class DataItem
+    public class DataItem 
     {
         #region Properties
 
@@ -41,6 +41,39 @@ namespace EPV.Data.DataItems
         public virtual void Load(IDataLink link)
         {
             link.Load(this);
+        }
+
+        public virtual void Load()
+        {
+            Load(DataChannels.DataLink);
+        }
+
+        #endregion
+
+        #region Save
+
+        public void Save(IDataLink link)
+        {
+            link.Save(this);
+        }
+
+        public void Save()
+        {
+            Save(DataChannels.DataLink);
+        }
+
+        #endregion
+
+        #region Delete
+
+        public void Delete(IDataLink link)
+        {
+            link.Delete(this);
+        }
+
+        public void Delete()
+        {
+            Delete(DataChannels.DataLink);
         }
 
         #endregion
@@ -122,6 +155,24 @@ namespace EPV.Data.DataItems
         public override string ToString()
         {
             return GetDescription();
+        }
+
+        #endregion
+
+        #region CopyFrom
+        public virtual void CopyFrom(DataItem source)
+        {
+            PropertyInfo[] properties = GetType().GetProperties();
+
+            foreach (PropertyInfo property in properties)
+            {
+                DataColumnAttribute dataColumnAttribute = property.GetCustomAttribute<DataColumnAttribute>();
+                if (dataColumnAttribute != null)
+                {
+                    object sourceValue = property.GetValue(source);
+                    property.SetValue(this, sourceValue);
+                }
+            }
         }
 
         #endregion

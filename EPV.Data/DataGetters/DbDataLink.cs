@@ -34,6 +34,12 @@ namespace EPV.Data.DataGetters
             }
         }
 
+        public virtual void Load<TDataItem>(TDataItem dataItem) where TDataItem : DataItem, new()
+        {
+            TDataItem source = Load<TDataItem>(dataItem.Id);
+            dataItem.CopyFrom(source);
+        }
+
         public virtual IList<TDataItem> LoadList<TDataItem>() where TDataItem : DataItem, new()
         {
             List<TDataItem> dataItems = new List<TDataItem>();
