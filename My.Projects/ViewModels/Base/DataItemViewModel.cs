@@ -82,7 +82,7 @@ namespace My.Projects.ViewModels.Base
         {
             if (Id != Guid.Empty)
             { 
-                return loaderArguments.Connector.Load<TDataItem>(DataItem);
+                DataItem.Load();
             }
 
             return DataItem;

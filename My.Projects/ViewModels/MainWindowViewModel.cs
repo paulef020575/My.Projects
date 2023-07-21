@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Threading;
+using EPV.Data.DataGetters;
 using EPV.Database;
 using My.Projects.Data;
 using My.Projects.ViewModels.Base;
@@ -41,7 +42,7 @@ namespace My.Projects.ViewModels
         /// <summary>
         ///     объект коннектора данных
         /// </summary>
-        private IDataConnection ApiConnector => DataChannel.Connector;
+        private IMyDataLink ApiConnector => DataChannels.DataLink as IMyDataLink;
 
         #endregion
 
@@ -146,7 +147,7 @@ namespace My.Projects.ViewModels
 
         public MainWindowViewModel()
         {
-            DataChannel.Connector = new MyProjectsApi((string)Application.Current.Resources["ApiUri"]);
+            DataChannels.DataLink = new MyProjectsApi((string)Application.Current.Resources["ApiUri"]);
             InProgress = false;
             ProgramStatus = "Everything is OK";
             //DispatcherTimer timer = new DispatcherTimer{ Interval = new TimeSpan(0, 0, 5)};

@@ -1,12 +1,13 @@
 ﻿using EPV.Database;
+using My.Projects.Data;
 
 namespace My.Projects.ViewModels.Base
 {
     public class LoaderArguments
     {
-        public IDataConnection Connector { get; private set; }
+        public IMyDataLink Connector { get; private set; }
 
-        public LoaderArguments(IDataConnection connector)
+        public LoaderArguments(IMyDataLink connector)
         {
             Connector = connector;
         }

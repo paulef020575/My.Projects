@@ -33,7 +33,7 @@ namespace EPV.Database
 
         #endregion
 
-        public T ExecuteScalar<T>(string query, CommandParameters parameters = null`) 
+        public T ExecuteScalar<T>(string query, CommandParameters parameters = null) 
         {
             using (TDbConnection connection = GetConnection())
             {

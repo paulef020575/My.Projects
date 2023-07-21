@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Net.Http;
 using System.Windows;
+using EPV.Data.DataGetters;
 using EPV.Database;
 using My.Projects.Data;
 
@@ -18,7 +19,7 @@ namespace My.Projects.ViewModels.Base
         /// <summary>
         ///     Коннектор для получения данных
         /// </summary>
-        public IDataConnection Connector => DataChannel.Connector;
+        public IMyDataLink Connector => DataChannels.DataLink as IMyDataLink;
 
         #endregion
 
