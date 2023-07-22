@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EPV.Data.DataGetters;
 
 namespace EPV.Data.DataItems
 {
@@ -42,7 +43,24 @@ namespace EPV.Data.DataItems
 
         #region Methods
 
-        
+        #region Load
+
+        public void Load(IDataLink link)
+        {
+            if (link != null)
+            {
+                Clear();
+                AddRange(link.LoadChildren<TChild>(IdParent, Parent.Id));
+                IsLoaded = true;
+            }
+        }
+
+        public void Load()
+        {
+            Load(DataChannels.DataLink);
+        }
+
+        #endregion
 
 
         #endregion

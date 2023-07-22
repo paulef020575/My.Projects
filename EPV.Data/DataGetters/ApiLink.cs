@@ -82,10 +82,12 @@ namespace EPV.Data.DataGetters
             return itemList?.ToList();
         }
 
-        public virtual IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid id) where TDataItem : DataItem, new()
+        public virtual IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid? id) 
+            where TDataItem : DataItem, new()
         {
             TDataItem[] itemList = new TDataItem[0];
-            string uri = $"API/{typeof(TDataItem)}/LoadChildren?idParent={parentColumn}&id={id}";
+            string uri = $"API/{typeof(TDataItem).Name}/LoadChildren?idParent={parentColumn}";
+            if (id.HasValue) uri += $"&id={id}";
 
             HttpResponseMessage response = Client.GetAsync(uri).GetAwaiter().GetResult();
 

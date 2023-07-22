@@ -4,6 +4,7 @@ using System.Windows;
 using EPV.Data.DataGetters;
 using EPV.Database;
 using My.Projects.Data;
+using My.Projects.MyEventArgs;
 
 namespace My.Projects.ViewModels.Base
 {
@@ -58,7 +59,7 @@ namespace My.Projects.ViewModels.Base
 
         public override void LoadData()
         {
-            startProgress(this, "Загрузка данных");
+            _onStartProgress(this, new MessageEventArgs("Загрузка данных"));
             BackgroundWorker loader = new BackgroundWorker();
             loader.DoWork += Loader_DoWork;
             loader.RunWorkerCompleted += Loader_RunWorkerCompleted;
@@ -72,7 +73,7 @@ namespace My.Projects.ViewModels.Base
             {
                 if (e.Error is HttpRequestException)
                 {
-                    _onError?.Invoke(this, (string)Application.Current.Resources["ApiError"]);
+                    _onError?.Invoke(this, new MessageEventArgs((string)Application.Current.Resources["ApiError"]));
                     SetData(null);
                 }
             }
@@ -81,7 +82,7 @@ namespace My.Projects.ViewModels.Base
                 SetData(e.Result);
             }
 
-            finishProgress(this, "");
+            _onFinishProgress(this, new MessageEventArgs(string.Empty));
         }
 
         private void Loader_DoWork(object sender, DoWorkEventArgs e)

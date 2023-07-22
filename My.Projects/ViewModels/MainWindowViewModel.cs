@@ -5,6 +5,8 @@ using System.Windows.Threading;
 using EPV.Data.DataGetters;
 using EPV.Database;
 using My.Projects.Data;
+using My.Projects.MyEventArgs;
+using My.Projects.Questions;
 using My.Projects.ViewModels.Base;
 using My.Projects.ViewModels.References;
 
@@ -141,6 +143,28 @@ namespace My.Projects.ViewModels
 
         #endregion
 
+        #region Question
+
+        private Question _question;
+
+        public Question Question
+        {
+            get => _question;
+            set
+            {
+                if (_question != value)
+                {
+                    _question = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(HasQuestion));
+                }
+            }
+        }
+
+        public bool HasQuestion => (Question != null);
+
+        #endregion
+
         #endregion
 
         #region Constructor
@@ -168,9 +192,9 @@ namespace My.Projects.ViewModels
         /// </summary>
         /// <param name="sender">класс, запустивший</param>
         /// <param name="e">строка статуса</param>
-        private void StartProgress(object sender, string e)
+        private void StartProgress(object sender, MessageEventArgs e)
         {
-            ProgramStatus = e;
+            ProgramStatus = e.Message;
             InProgress = true;
         }
 
@@ -178,9 +202,9 @@ namespace My.Projects.ViewModels
 
         #region FinishProgress
 
-        private void FinishProgress(object sender, string e = "")
+        private void FinishProgress(object sender, MessageEventArgs e)
         {
-            ProgramStatus = e;
+            ProgramStatus = e.Message;
             InProgress = false;
         }
 
@@ -197,6 +221,7 @@ namespace My.Projects.ViewModels
                 CurrentViewModel.OnError -= ShowError;
                 CurrentViewModel.OnStatusMessage -= ShowStatusMessage;
                 CurrentViewModel.OnSwitchToViewModel -= SwitchToViewModel;
+                CurrentViewModel.OnQuestion -= ShowQuestion;
             }
 
             viewModel.PreviousViewModel = CurrentViewModel;
@@ -206,6 +231,7 @@ namespace My.Projects.ViewModels
             viewModel.OnError += ShowError;
             viewModel.OnStatusMessage += ShowStatusMessage;
             viewModel.OnSwitchToViewModel += SwitchToViewModel;
+            viewModel.OnQuestion += ShowQuestion;
 
             viewModel.LoadData();
             CurrentViewModel = viewModel;
@@ -243,16 +269,16 @@ namespace My.Projects.ViewModels
 
         #region ShowError
 
-        private void ShowError(object sender, string e)
+        private void ShowError(object sender, MessageEventArgs e)
         {
-            ErrorMessage = e;
+            ErrorMessage = e.Message;
             DispatcherTimer errorTimer = new DispatcherTimer();
             errorTimer.Interval = new TimeSpan(0, 0, 5);
             errorTimer.Tick += ErrorTimer_Tick;
             errorTimer.Start();
         }
 
-        private void ErrorTimer_Tick(object sender, EventArgs e)
+        private void ErrorTimer_Tick(object sender, System.EventArgs e)
         {
             ((DispatcherTimer) sender).Stop();
             ErrorMessage = "";
@@ -262,11 +288,35 @@ namespace My.Projects.ViewModels
 
         #region ShowStatusMessage
 
-        private void ShowStatusMessage(object sender, string e)
+        private void ShowStatusMessage(object sender, MessageEventArgs e)
         {
-            ProgramStatus = e;
+            ProgramStatus = e.Message;
         }
 
+
+        #endregion
+
+        #region ShowQuestion
+
+        private void ShowQuestion(object sender, QuestionEventArgs e)
+        {
+            Question = new Question(
+                e.Message,
+                () => 
+                { e.OnYesAnswer.Invoke();
+                    ClearQuestion();
+                },
+                () => { e.OnNoAnswer?.Invoke();
+                    ClearQuestion();
+                },
+                e.YesText,
+                e.NoText);
+        }
+
+        private void ClearQuestion()
+        {
+            Question = null;
+        }
 
         #endregion
 

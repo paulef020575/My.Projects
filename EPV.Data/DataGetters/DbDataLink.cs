@@ -110,9 +110,12 @@ namespace EPV.Data.DataGetters
             return references;
         }
 
-        public virtual IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid id) where TDataItem : DataItem, new()
+        public virtual IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid? id) where TDataItem : DataItem, new()
         {
             QueryCondition condition = new QueryCondition(parentColumn, Comparison.Equal, id);
+
+            if (id == null)
+                condition = new QueryCondition(parentColumn, Comparison.IsNull);
             string query = QueryBuilder.GetLoadListQuery<TDataItem>(condition);
             CommandParameters parameters = condition.GetParameters();
 

@@ -83,7 +83,7 @@ namespace My.Projects.Web.Controllers
         }
 
         [HttpGet("[action]")]
-        public IList<TDataItem> LoadChildren(string idParent, Guid id)
+        public IList<TDataItem> LoadChildren(string idParent, Guid? id = null)
         {
             MyProjectsConnection connection = new MyProjectsConnection(ConnectionString);
             return connection.LoadChildren<TDataItem>(idParent, id);

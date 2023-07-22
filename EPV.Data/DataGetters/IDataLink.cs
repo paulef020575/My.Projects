@@ -19,6 +19,6 @@ namespace EPV.Data.DataGetters
 
         IList<Reference<TDataItem>> LoadReferences<TDataItem>() where TDataItem : DataItem, new();
 
-        IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid id) where TDataItem : DataItem, new();
+        IList<TDataItem> LoadChildren<TDataItem>(string parentColumn, Guid? id) where TDataItem : DataItem, new();
     }
 }

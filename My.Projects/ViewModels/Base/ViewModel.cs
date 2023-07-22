@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using My.Projects.Annotations;
+using My.Projects.MyEventArgs;
 
 namespace My.Projects.ViewModels.Base
 {
@@ -58,33 +59,33 @@ namespace My.Projects.ViewModels.Base
 
         #region OnStartProgress
 
-        protected EventHandler<string> startProgress;
+        protected EventHandler<MessageEventArgs> _onStartProgress;
 
-        public event EventHandler<string> OnStartProgress
+        public event EventHandler<MessageEventArgs> OnStartProgress
         {
-            add { startProgress += value; }
-            remove { startProgress -= value; }
+            add { _onStartProgress += value; }
+            remove { _onStartProgress -= value; }
         }
 
         #endregion
 
         #region OnFinishProgress
 
-        protected EventHandler<string> finishProgress;
+        protected EventHandler<MessageEventArgs> _onFinishProgress;
 
-        public event EventHandler<string> OnFinishProgress
+        public event EventHandler<MessageEventArgs> OnFinishProgress
         {
-            add { finishProgress += value; }
-            remove { finishProgress -= value; }
+            add { _onFinishProgress += value; }
+            remove { _onFinishProgress -= value; }
         }
 
         #endregion
 
         #region OnError
 
-        protected EventHandler<string> _onError;
+        protected EventHandler<MessageEventArgs> _onError;
 
-        public event EventHandler<string> OnError
+        public event EventHandler<MessageEventArgs> OnError
         {
             add { _onError += value; }
             remove { _onError -= value; }
@@ -94,9 +95,9 @@ namespace My.Projects.ViewModels.Base
 
         #region OnStatusMessage
 
-        protected EventHandler<string> _onStatusMessage;
+        protected EventHandler<MessageEventArgs> _onStatusMessage;
 
-        public event EventHandler<string> OnStatusMessage
+        public event EventHandler<MessageEventArgs> OnStatusMessage
         { 
             add { _onStatusMessage += value; }
             remove { _onStatusMessage -= value; }
@@ -113,6 +114,18 @@ namespace My.Projects.ViewModels.Base
         {
             add { _onSwitchToViewModel += value; }
             remove { _onSwitchToViewModel -= value; }
+        }
+
+        #endregion
+
+        #region OnQuestion
+
+        protected EventHandler<QuestionEventArgs> _onQuestion;
+
+        public event EventHandler<QuestionEventArgs> OnQuestion
+        {
+            add => _onQuestion += value;
+            remove => _onQuestion -= value;
         }
 
         #endregion

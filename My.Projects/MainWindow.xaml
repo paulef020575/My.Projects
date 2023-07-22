@@ -43,6 +43,9 @@
                             <DataTrigger Binding="{Binding InProgress}" Value="True">
                                 <Setter Property="IsEnabled" Value="False" />
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding HasQuestion}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </DockPanel.Style>
@@ -61,6 +64,39 @@
                 </DockPanel.Style>
                 <loadSpinner:LoadingSpinner IsLoading="{Binding InProgress}" Thickness="5" Color="DarkGreen" />
             </DockPanel>
+            <Grid Name="QuestionPanel" Opacity=".85" Background="White">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasQuestion}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" FontWeight="SemiBold" FontSize="24"
+                           HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                           Text="{Binding Question.Message}" Margin="0 0 0 25"/>
+
+                <UniformGrid Grid.Row="1" Columns="3" Rows="1"
+                             HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button FontSize="20" Margin="5" Foreground="Green" FontWeight="SemiBold" 
+                            Content="{Binding Question.YesText}" Command="{Binding Question.YesCommand}"/>
+                    <Grid Width="75"/>
+                    <Button FontSize="20" Margin="5" Foreground="Red" FontWeight="SemiBold"
+                            Content="{Binding Question.NoText}" Command="{Binding Question.NoCommand}"/>
+                </UniformGrid>
+            </Grid>
         </Grid>
     </DockPanel>
 </Window>
