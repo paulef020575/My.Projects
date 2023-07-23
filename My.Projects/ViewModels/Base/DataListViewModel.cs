@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.NetworkInformation;
+using EPV.Data.DataGetters;
 using EPV.Data.DataItems;
 using My.Projects.Data;
+using My.Projects.MyEventArgs;
 
 namespace My.Projects.ViewModels.Base
 {
@@ -87,7 +90,24 @@ namespace My.Projects.ViewModels.Base
 
         private void EditItem(TDataItem item)
         {
-            _onSwitchToViewModel?.Invoke(this, GetDataItemViewModel(item));
+            _onSwitchToViewModel?.Invoke(this, new ViewModelEventArgs(GetDataItemViewModel(item)));
+        }
+
+        #endregion
+
+        #region DeleteItem
+
+        private void Delete(TDataItem item)
+        {
+            _onQuestion(this, new QuestionEventArgs(
+                $"Удалить объект {item.GetDescription()}?",
+                () =>
+                {
+                    DataChannels.DataLink.Delete(item);
+                    LoadData();
+                    _onStatusMessage(this, new MessageEventArgs("Объект удален"));
+                }));
+
         }
 
         #endregion
@@ -102,7 +122,7 @@ namespace My.Projects.ViewModels.Base
 
         private void AddItem()
         {
-            _onSwitchToViewModel(this, GetDataItemViewModel());
+            _onSwitchToViewModel(this, new ViewModelEventArgs(GetDataItemViewModel()));
         }
 
         #endregion
@@ -156,6 +176,22 @@ namespace My.Projects.ViewModels.Base
                 if (_addItemCommand == null)
                     _addItemCommand = new RelayCommand(x => AddItem());
                 return _addItemCommand;
+            }
+        }
+
+        #endregion
+
+        #region DeleteItemCommand
+
+        private RelayCommand _deleteItemCommand;
+
+        public RelayCommand DeleteItemCommand
+        {
+            get
+            {
+                if (_deleteItemCommand == null)
+                    _deleteItemCommand = new RelayCommand(x => Delete((TDataItem)x), x => x is TDataItem);
+                return _deleteItemCommand;
             }
         }
 

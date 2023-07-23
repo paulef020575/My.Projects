@@ -212,7 +212,7 @@ namespace My.Projects.ViewModels
 
         #region ShowViewModel
 
-        public void ShowViewModel(ViewModel viewModel)
+        public void ShowViewModel(ViewModel viewModel, bool refreshData = true)
         {
             if (CurrentViewModel != null)
             {
@@ -233,7 +233,8 @@ namespace My.Projects.ViewModels
             viewModel.OnSwitchToViewModel += SwitchToViewModel;
             viewModel.OnQuestion += ShowQuestion;
 
-            viewModel.LoadData();
+            if (refreshData)
+                viewModel.LoadData();
             CurrentViewModel = viewModel;
         }
 
@@ -241,9 +242,9 @@ namespace My.Projects.ViewModels
 
         #region SwitchToViewModel
 
-        private void SwitchToViewModel(object sender, ViewModel viewModel)
+        private void SwitchToViewModel(object sender, ViewModelEventArgs e)
         {
-            ShowViewModel(viewModel);
+            ShowViewModel(e.ViewModel, e.RefreshData);
         }
 
         #endregion

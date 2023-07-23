@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:My.Projects.Views"
              xmlns:references="clr-namespace:My.Projects.Classes.References;assembly=My.Projects.Classes"
+             xmlns:base="clr-namespace:My.Projects.ViewModels.Base"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="DepartmentList">
@@ -27,16 +28,25 @@
         </StackPanel>
         <TreeView ItemsSource="{Binding Items}" Margin="5">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type references:Department}" ItemsSource="{Binding Children}">
+                <HierarchicalDataTemplate DataType="{x:Type references:Department}"  ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5 5 5 0" Text="{Binding Name}" />
                         <Button FontFamily="Segoe MDL2 Assets" Content="&#xE70F;" Margin="5 5 5 0" Padding="3" ToolTip="изменить"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
                                                   Path=DataContext.EditItemCommand}" 
                                 CommandParameter="{Binding}" />
+                        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" Margin="5 5 5 0" Padding="3" ToolTip="удалить"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
+                                                  Path=DataContext.DeleteItemCommand}" 
+                                CommandParameter="{Binding}" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
         </TreeView>
     </DockPanel>
 </UserControl>

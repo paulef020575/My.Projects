@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EPV.Data.DataGetters;
 using EPV.Data.DataItems;
 using My.Projects.Data;
 using My.Projects.MyEventArgs;
@@ -82,8 +83,8 @@ namespace My.Projects.ViewModels.Base
         protected override object GetData(LoaderArguments loaderArguments)
         {
             if (Id != Guid.Empty)
-            { 
-                DataItem.Load();
+            {
+                return DataChannels.DataLink.Load<TDataItem>(Id);
             }
 
             return DataItem;
@@ -163,7 +164,7 @@ namespace My.Projects.ViewModels.Base
             else
             {
                 _onFinishProgress(this, new MessageEventArgs((string) Application.Current.Resources["DataSaved"]));
-                _onSwitchToViewModel(this, PreviousViewModel);
+                _onSwitchToViewModel(this, new ViewModelEventArgs(PreviousViewModel));
             }
         }
 
@@ -180,7 +181,7 @@ namespace My.Projects.ViewModels.Base
 
         private void CancelEdit()
         {
-            _onSwitchToViewModel(this, PreviousViewModel);
+            _onSwitchToViewModel(this, new ViewModelEventArgs(PreviousViewModel, false));
         }
 
         #endregion

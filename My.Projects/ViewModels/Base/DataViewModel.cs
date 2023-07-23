@@ -83,7 +83,7 @@ namespace My.Projects.ViewModels.Base
             }
 
             _onFinishProgress(this, new MessageEventArgs(string.Empty));
-        }
+            }
 
         private void Loader_DoWork(object sender, DoWorkEventArgs e)
         {

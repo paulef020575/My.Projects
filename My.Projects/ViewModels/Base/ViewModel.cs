@@ -108,9 +108,9 @@ namespace My.Projects.ViewModels.Base
 
         #region OnSwitchToViewModel
 
-        protected EventHandler<ViewModel> _onSwitchToViewModel;
+        protected EventHandler<ViewModelEventArgs> _onSwitchToViewModel;
 
-        public event EventHandler<ViewModel> OnSwitchToViewModel
+        public event EventHandler<ViewModelEventArgs> OnSwitchToViewModel
         {
             add { _onSwitchToViewModel += value; }
             remove { _onSwitchToViewModel -= value; }

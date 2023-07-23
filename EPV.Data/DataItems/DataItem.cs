@@ -12,7 +12,7 @@ namespace EPV.Data.DataItems
     /// </summary>
     [Identity]
     [Description(nameof(DataItem.Id))]
-    public class DataItem 
+    public abstract class DataItem 
     {
         #region Properties
 
@@ -36,47 +36,47 @@ namespace EPV.Data.DataItems
 
         #region Methods
 
-        #region Load
+        //#region Load
 
-        public virtual void Load(IDataLink link)
-        {
-            link.Load(this);
-        }
+        //public virtual void Load(IDataLink link)
+        //{
+        //    link.Load(this);
+        //}
 
-        public virtual void Load()
-        {
-            Load(DataChannels.DataLink);
-        }
+        //public virtual void Load()
+        //{
+        //    Load(DataChannels.DataLink);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Save
+        //#region Save
 
-        public void Save(IDataLink link)
-        {
-            link.Save(this);
-        }
+        //public void Save(IDataLink link)
+        //{
+        //    link.Save(this);
+        //}
 
-        public void Save()
-        {
-            Save(DataChannels.DataLink);
-        }
+        //public void Save()
+        //{
+        //    Save(DataChannels.DataLink);
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Delete
+        //#region Delete
 
-        public void Delete(IDataLink link)
-        {
-            link.Delete(this);
-        }
+        //public void Delete(IDataLink link)
+        //{
+        //    link.Delete(this);
+        //}
 
-        public void Delete()
-        {
-            Delete(DataChannels.DataLink);
-        }
+        //public void Delete()
+        //{
+        //    Delete(DataChannels.DataLink);
+        //}
 
-        #endregion
+        //#endregion
 
         #region ReadProperties
 
