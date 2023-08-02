@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Threading;
 using EPV.Data.DataGetters;
@@ -178,6 +179,13 @@ namespace My.Projects.ViewModels
             //timer.Tick += Timer_Tick;
             //    timer.Start();
 
+            Dictionary<int, bool> res = new Dictionary<int, bool>();
+            int y = 1;
+            for (int x = 0; x < 10; x++)
+            {
+                res.Add(x, (y & 13) > 0);
+                y *= 2;
+            }
             //ShowViewModel(new DepartmentListViewModel(ApiConnector));
         }
 

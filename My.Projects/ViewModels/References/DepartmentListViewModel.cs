@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using My.Projects.Classes.References;
 using My.Projects.Data;
 using My.Projects.ViewModels.Base;
 using My.Projects.ViewModels.ReferenceItems;
+using My.Projects.ViewModels.TreeNodes;
 
 namespace My.Projects.ViewModels.References
 {
@@ -11,11 +13,11 @@ namespace My.Projects.ViewModels.References
     {
         public override string Title => "Подразделения холдинга";
 
-        public ObservableCollection<DepartmentViewModel> TreeItems { get; }
+        public ObservableCollection<DepartmentTreeNode> TreeItems { get; }
 
         public DepartmentListViewModel() : base()
         {
-            TreeItems = new ObservableCollection<DepartmentViewModel>();
+            TreeItems = new ObservableCollection<DepartmentTreeNode>();
         }
 
         protected override DataItemViewModel<Department> GetDataItemViewModel(Department dataItem = null)
@@ -29,10 +31,19 @@ namespace My.Projects.ViewModels.References
             return loaderArguments.Connector.LoadChildren<Department>("IdParent", null);
         }
 
+        protected override void SetData(object data)
+        {
+            IList<Department> departments = (IList<Department>)data;
+
+            foreach (Department department in departments)
+                TreeItems.Add(new DepartmentTreeNode(department));
+        }
+
         public void LoadChildren(Guid id)
         {
             foreach (Department department in Items)
             {
+                
             }
         }
     }
