@@ -88,7 +88,7 @@ namespace My.Projects.ViewModels.Base
 
         #region EditItem
 
-        private void EditItem(TDataItem item)
+        protected virtual void EditItem(TDataItem item)
         {
             _onSwitchToViewModel?.Invoke(this, new ViewModelEventArgs(GetDataItemViewModel(item)));
         }
@@ -97,7 +97,7 @@ namespace My.Projects.ViewModels.Base
 
         #region DeleteItem
 
-        private void Delete(TDataItem item)
+        protected virtual void Delete(TDataItem item)
         {
             _onQuestion(this, new QuestionEventArgs(
                 $"Удалить объект {item.GetDescription()}?",
@@ -120,7 +120,7 @@ namespace My.Projects.ViewModels.Base
 
         #region AddItem
 
-        private void AddItem()
+        protected virtual void AddItem()
         {
             _onSwitchToViewModel(this, new ViewModelEventArgs(GetDataItemViewModel()));
         }

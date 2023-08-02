@@ -4,6 +4,7 @@ using EPV.Data.DataItems;
 using My.Projects.Classes.References;
 using My.Projects.Data;
 using My.Projects.ViewModels.Base;
+using My.Projects.ViewModels.References;
 
 namespace My.Projects.ViewModels.ReferenceItems
 {
@@ -79,6 +80,13 @@ namespace My.Projects.ViewModels.ReferenceItems
         protected override object GetData(LoaderArguments loaderArguments)
         {
             return base.GetData(loaderArguments);
+        }
+
+        protected override void ReturnToPreviousViewModel()
+        {
+            if (PreviousViewModel is DepartmentListViewModel)
+                ((DepartmentListViewModel)PreviousViewModel).LoadChildren(IdParent?.Id);
+            base.ReturnToPreviousViewModel();
         }
     }
 }

@@ -8,15 +8,21 @@ namespace My.Projects.ViewModels.TreeNodes
 
         public override void ReadChildren()
         {
-            DataItem.Children.Load();
-            Children.Clear();
+            _children.Clear();
 
             foreach (Department child in DataItem.Children)
             {
-                Children.Add(new DepartmentTreeNode(child));    
+                _children.Add(new DepartmentTreeNode(child));    
             }
 
-            OnPropertyChanged(nameof(Children));
+            //OnPropertyChanged(nameof(Children));
+        }
+
+        public override void RefreshChildren()
+        {
+            DataItem.Children.Load();
+
+            ReadChildren();
         }
     }
 }

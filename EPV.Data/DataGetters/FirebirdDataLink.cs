@@ -1,4 +1,5 @@
-﻿using EPV.Data.Queries;
+﻿using System;
+using EPV.Data.Queries;
 using EPV.Database;
 
 namespace EPV.Data.DataGetters
@@ -18,6 +19,8 @@ namespace EPV.Data.DataGetters
 
         public override void Save<TDataItem>(TDataItem dataItem)
         {
+            if (dataItem.Id.Equals(Guid.Empty))
+                dataItem.Id = Guid.NewGuid();
             string query = QueryBuilder.GetUpdateOrInsertQuery(dataItem);
             DataConnection.ExecuteNonQuery(query, QueryBuilder.GetQueryParameters(dataItem));
         }

@@ -56,6 +56,8 @@ namespace My.Projects.ViewModels.TreeNodes
 
         #region Children
 
+        protected bool _childrenIsLoaded;
+
         protected ObservableCollection<TChild> _children;
         /// <summary>
         ///     Подчиненные узлу объекты
@@ -64,8 +66,8 @@ namespace My.Projects.ViewModels.TreeNodes
         {
             get
             {
-                if (_children == null)
-                    ReadChildren();
+                if (!_childrenIsLoaded)
+                    LoadChildren();
                 return _children;
             }
         }
@@ -82,6 +84,8 @@ namespace My.Projects.ViewModels.TreeNodes
         {
             DataItem = dataItem;
             _children = new ObservableCollection<TChild>();
+
+            _childrenIsLoaded = false;
         }
 
         #endregion
@@ -94,6 +98,22 @@ namespace My.Projects.ViewModels.TreeNodes
         ///     Перезаполняет коллекцию подчиненных объектов
         /// </summary>
         public abstract void ReadChildren();
+
+        #endregion
+
+        #region LoadChildren
+
+        protected virtual void LoadChildren()
+        {
+            ReadChildren();
+            _childrenIsLoaded = true;
+        }
+
+        #endregion
+
+        #region RefreshChildren
+
+        public abstract void RefreshChildren();
 
         #endregion
 

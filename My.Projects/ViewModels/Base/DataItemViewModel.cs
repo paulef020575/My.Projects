@@ -164,7 +164,7 @@ namespace My.Projects.ViewModels.Base
             else
             {
                 _onFinishProgress(this, new MessageEventArgs((string) Application.Current.Resources["DataSaved"]));
-                _onSwitchToViewModel(this, new ViewModelEventArgs(PreviousViewModel));
+                ReturnToPreviousViewModel();
             }
         }
 
@@ -180,6 +180,15 @@ namespace My.Projects.ViewModels.Base
         #region CancelEdit
 
         private void CancelEdit()
+        {
+            ReturnToPreviousViewModel();
+        }
+
+        #endregion
+
+        #region ReturnToPreviousViewModel
+
+        protected virtual void ReturnToPreviousViewModel()
         {
             _onSwitchToViewModel(this, new ViewModelEventArgs(PreviousViewModel, false));
         }
